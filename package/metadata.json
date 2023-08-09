@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Name": "Thermal Monitor",
+        "Id": "org.kde.olib.thermalmonitor",
+        "Description": "Placeholder Description",
+        "Category": "System Information",
+		"Icon": "temperature-warm",
+		"Authors": [
+			{
+				"Email": "olib141@outlook.com",
+				"Name": "Oliver Beard"
+			}
+		],
+        "Version": "0.1.0",
+		"License": "WTFPL",
+		"Website": "https://invent.kde.org/olib/thermalmonitor",
+		"BugReportUrl": "https://invent.kde.org/olib/thermalmonitor/-/issues"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}
