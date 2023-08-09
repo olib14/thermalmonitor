@@ -166,6 +166,8 @@ ColumnLayout {
         width:  Kirigami.Units.gridUnit * 20
         height: Kirigami.Units.gridUnit * 8
 
+        anchors.centerIn: root
+
         title: "Edit Sensor"
 
         Kirigami.FormLayout {
@@ -203,6 +205,8 @@ ColumnLayout {
 
         width:  Kirigami.Units.gridUnit * 20
         height: Kirigami.Units.gridUnit * 16
+
+        anchors.centerIn: root
 
         title: "Add Sensor"
 
