@@ -1,15 +1,24 @@
 # Thermal Monitor
 
-A KDE Plasmoid for displaying system temperature information.
+A KDE Plasmoid for displaying system temperatures.
 
 ![screenshot](preview-panel.png)
 ![screenshot](preview-desktop.png)
+
+Inspired by:
+
+ - https://github.com/kotelnik/plasma-applet-thermal-monitor
+ - and its fork https://gitlab.com/agurenko/plasma-applet-thermal-monitor
+
+This applet uses `libksysguard` for retrieving temperature information provided by `ksystemstats`.
 
 ## Usage
 
 Add the applet to either the panel or the desktop. To add sensors to display, right click the applet and configure.
 
-The libraries `ksystemstats`, `libksysguard` and `kitemmodels` are required.
+Sensors can be added and renamed through the "Add Sensors…" button. To export sensors to the clipboard, and copy from, the import/export options can be used.
+
+The libraries `ksystemstats`, `libksysguard` and `kitemmodels` must be installed.
 
 ## Installation
 
