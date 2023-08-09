@@ -58,15 +58,25 @@ ColumnLayout {
 
         model: ListModel {
             Component.onCompleted: {
-                JSON.parse(root.cfg_sensors).forEach((sensor) => append(sensor))
+                loadString(root.cfg_sensors)
             }
 
-            function save() {
+            function loadString(string) {
+                let sensors = JSON.parse(string)
+                clear()
+                sensors.forEach((sensor) => append(sensor))
+            }
+
+            function saveString() {
                 let sensors = []
                 for (var i = 0; i < count; ++i) {
                     sensors.push(get(i))
                 }
-                root.cfg_sensors = JSON.stringify(sensors)
+                return JSON.stringify(sensors)
+            }
+
+            function save() {
+                root.cfg_sensors = saveString()
             }
         }
 
@@ -147,13 +157,17 @@ ColumnLayout {
             QQC2.Button {
                 text: "Import…"
                 icon.name: "document-import"
-                onClicked: {}
+                onClicked: sensorsView.model.loadString(clipboard.fromClipboard())
             }
 
             QQC2.Button {
                 text: "Export…"
                 icon.name: "document-export"
-                onClicked: {}
+                onClicked: clipboard.toClipboard(sensorsView.model.saveString())
+            }
+
+            ClipboardHelper {
+                id: clipboard
             }
         }
     }
