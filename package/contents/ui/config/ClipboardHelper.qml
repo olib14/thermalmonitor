@@ -5,6 +5,9 @@
 
 import QtQuick
 
+// TODO: Use kdeclarative Clipboard instead
+// https://api.kde.org/frameworks/kdeclarative/html/classClipboard.html
+
 TextEdit {
     visible: false
 
