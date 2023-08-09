@@ -14,21 +14,9 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
-    Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
-    //toolTipMainText: Plasmoid.title
-    //toolTipSubText: Plasmoid.description
-
-    //readonly property var sensors: JSON.parse("[{\"name\":\"CPU\",\"sensorId\":\"cpu\/all\/averageTemperature\"},{\"name\":\"GPU\",\"sensorId\":\"gpu\/gpu0\/temperature\"},{\"name\":\"HDD\",\"sensorId\":\"\"}]")
-
     readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors)
-    /*
-    readonly property var sensors: ListModel {
-        ListElement { name: "CPU"; sensorId: "cpu/all/averageTemperature" }
-        ListElement { name: "GPU"; sensorId: "gpu/gpu0/temperature" }
-        ListElement { name: "HDD"; sensorId: "" }
-    }
-    */
 
+    Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
     Plasmoid.configurationRequired: !sensors.length
 
     preferredRepresentation: fullRepresentation
@@ -72,12 +60,6 @@ PlasmoidItem {
 
         columnSpacing: Kirigami.Units.largeSpacing
         rowSpacing:    Kirigami.Units.largeSpacing
-
-        /*
-        TemperatureDelegate { name: "CPU"; sensorId: "cpu/all/averageTemperature" }
-        TemperatureDelegate { name: "GPU"; sensorId: "gpu/gpu0/temperature" }
-        TemperatureDelegate { name: "HDD"; sensorId: "" }
-        */
 
         Repeater {
             id: delegateRepeater
