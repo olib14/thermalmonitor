@@ -22,7 +22,7 @@ kquitapp5 plasmashell && kstart5 plasmashell &>/dev/null
 
 For Plasma 6 built by kdesrc-build, you can do:
 
-```
+```bash
 cmake -S . -B build -DCMAKE_PREFIX_PATH="~/kde/usr" -DCMAKE_INSTALL_PREFIX="~/kde/usr"
 cd build && make install
 ```
