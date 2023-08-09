@@ -155,13 +155,13 @@ ColumnLayout {
             }
 
             QQC2.Button {
-                text: "Import…"
+                text: "Import"
                 icon.name: "document-import"
                 onClicked: sensorsView.model.loadString(clipboard.fromClipboard())
             }
 
             QQC2.Button {
-                text: "Export…"
+                text: "Export"
                 icon.name: "document-export"
                 onClicked: clipboard.toClipboard(sensorsView.model.saveString())
             }
