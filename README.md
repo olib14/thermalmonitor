@@ -14,7 +14,7 @@ The libraries `ksystemstats`, `libksysguard` and `kitemmodels` are required.
 ## Installation
 
 ```bash
-git clone https://invent.kde.org/olib/ideapadcontrols.git
+git clone https://invent.kde.org/olib/thermalmonitor.git
 cd thermalmonitor
 cmake . && sudo make install
 kquitapp5 plasmashell && kstart5 plasmashell &>/dev/null
