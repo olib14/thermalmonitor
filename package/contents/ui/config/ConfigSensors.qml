@@ -10,6 +10,7 @@ import QtQml.Models
 
 import org.kde.kirigami as Kirigami
 import org.kde.kirigamiaddons.components as KirigamiComponents
+import org.kde.kquickcontrolsaddons as KQuickControlsAddons
 
 ColumnLayout {
     id: root
@@ -157,16 +158,16 @@ ColumnLayout {
             QQC2.Button {
                 text: "Import"
                 icon.name: "document-import"
-                onClicked: sensorsView.model.loadString(clipboard.fromClipboard())
+                onClicked: sensorsView.model.loadString(clipboard.content)
             }
 
             QQC2.Button {
                 text: "Export"
                 icon.name: "document-export"
-                onClicked: clipboard.toClipboard(sensorsView.model.saveString())
+                onClicked: clipboard.content = sensorsView.model.saveString()
             }
 
-            ClipboardHelper {
+            KQuickControlsAddons.Clipboard {
                 id: clipboard
             }
         }
