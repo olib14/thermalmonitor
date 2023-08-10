@@ -15,7 +15,9 @@ ColumnLayout {
     id: root
 
     property string cfg_sensors
+
     readonly property bool libAvailable: availableSensorsLoader.status === Loader.Ready
+    readonly property bool clipboardAvailable: clipboardLoader.status === Loader.Ready
 
     spacing: 0
 
@@ -35,6 +37,16 @@ ColumnLayout {
 
             text: "The libraries <i>ksystemstats</i> (and <i>libksysguard</i>), <i>kitemmodels</i> are used to retrieve sensor data and are required to use this applet. Please ensure they are installed."
             type: Kirigami.MessageType.Error
+        }
+
+        Kirigami.InlineMessage {
+            Layout.fillWidth: true
+
+            visible: !root.clipboardAvailable
+
+            text: "The library <i>kdeclarative</i> is required to export sensors to, and copy from, the  clipboard."
+            type: Kirigami.MessageType.Warning
+            showCloseButton: true
         }
     }
 
@@ -153,17 +165,20 @@ ColumnLayout {
             QQC2.Button {
                 text: "Import"
                 icon.name: "document-import"
-                onClicked: sensorsView.model.loadString(clipboard.content)
+                enabled: root.clipboardAvailable
+                onClicked: sensorsView.model.loadString(clipboardLoader.item.content)
             }
 
             QQC2.Button {
                 text: "Export"
                 icon.name: "document-export"
-                onClicked: clipboard.content = sensorsView.model.saveString()
+                enabled: root.clipboardAvailable
+                onClicked: clipboardLoader.item.content = sensorsView.model.saveString()
             }
 
-            KQuickControlsAddons.Clipboard {
-                id: clipboard
+            Loader {
+                id: clipboardLoader
+                Component.onCompleted: setSource("ClipboardProxy.qml")
             }
         }
     }
