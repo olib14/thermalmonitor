@@ -57,12 +57,16 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
+        Kirigami.Theme.colorSet: Kirigami.Theme.View
+        Kirigami.Theme.inherit: false
+
         Rectangle {
             // Provides background as this is
             // not based on ScrollViewKCM
 
             anchors.fill: sensorsView
             z: -1
+            color: Kirigami.Theme.backgroundColor
         }
 
         clip: true
