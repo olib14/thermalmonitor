@@ -59,8 +59,8 @@ Item {
         width:  isVertical ? fullRepresentation.width : implicitWidth
         height: isVertical ? implicitHeight : fullRepresentation.height
 
-        columnSpacing: Kirigami.Units.largeSpacing
-        rowSpacing:    Kirigami.Units.largeSpacing
+        columnSpacing: Kirigami.Units.smallSpacing
+        rowSpacing:    Kirigami.Units.smallSpacing
 
         Repeater {
             id: delegateRepeater
