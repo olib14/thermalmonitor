@@ -58,8 +58,8 @@ PlasmoidItem {
         width:  isVertical ? root.width : implicitWidth
         height: isVertical ? implicitHeight : root.height
 
-        columnSpacing: Kirigami.Units.largeSpacing
-        rowSpacing:    Kirigami.Units.largeSpacing
+        columnSpacing: Kirigami.Units.smallSpacing
+        rowSpacing:    Kirigami.Units.smallSpacing
 
         Repeater {
             id: delegateRepeater
