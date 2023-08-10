@@ -18,7 +18,7 @@ Add the applet to either the panel or the desktop. To add sensors to display, ri
 
 Sensors can be added and renamed through the "Add Sensors…" button. To export sensors to the clipboard, and copy from, the import/export options can be used.
 
-The libraries `ksystemstats`, `libksysguard` and `kitemmodels` must be installed.
+The libraries `ksystemstats`, `libksysguard`, `kitemmodels` and `kdeclarative` must be installed.
 
 ## Installation
 
