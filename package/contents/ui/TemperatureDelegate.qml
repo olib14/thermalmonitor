@@ -26,14 +26,13 @@ ColumnLayout {
 
     property alias sensor: sensorLoader.item
 
-    Layout.leftMargin:  Kirigami.Units.smallSpacing
-    Layout.rightMargin: Kirigami.Units.smallSpacing
-
     onUpdateRateLimitChanged: {
         if (sensor) { sensor.updateRateLimit = updateRateLimit * 1000; }
     }
 
-    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+    Layout.leftMargin:  Kirigami.Units.smallSpacing
+    Layout.rightMargin: Kirigami.Units.smallSpacing
+    Layout.alignment:   Qt.AlignHCenter | Qt.AlignVCenter
 
     spacing: 0
 
