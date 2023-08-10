@@ -15,11 +15,11 @@ Item {
     id: root
 
     readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors)
+    readonly property bool hasSensors: sensors.length
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
-    Plasmoid.configurationRequired: !sensors.length
 
-    Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
+    Plasmoid.preferredRepresentation: hasSensors ? Plasmoid.fullRepresentation : Plasmoid.compactRepresentation
     Plasmoid.fullRepresentation: GridLayout {
         id: fullRepresentation
 
@@ -69,43 +69,10 @@ Item {
             delegate: TemperatureDelegate { name: modelData.name; sensorId: modelData.sensorId }
         }
 
-        Kirigami.Icon {
-            visible: Plasmoid.configurationRequired
-
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            Layout.minimumWidth: {
-                switch (Plasmoid.formFactor) {
-                case PlasmaCore.Types.Vertical:
-                    return 0;
-                case PlasmaCore.Types.Horizontal:
-                    return height;
-                default:
-                    return Kirigami.Units.gridUnit * 3;
-                }
-            }
-
-            Layout.minimumHeight: {
-                switch (Plasmoid.formFactor) {
-                case PlasmaCore.Types.Vertical:
-                    return width;
-                case PlasmaCore.Types.Horizontal:
-                    return 0;
-                default:
-                    return Kirigami.Units.gridUnit * 3;
-                }
-            }
-
-            source: Plasmoid.icon
-
-            active: mouseArea.containsMouse
-
-            MouseArea {
-                id: mouseArea
-
-                anchors.fill: parent
-                onClicked: Plasmoid.configure()
-            }
+        PlasmaComponents.Button {
+            visible: !root.hasSensors
+            text: "Configure…"
+            onClicked: Plasmoid.action("configure").trigger();
         }
     }
 }
