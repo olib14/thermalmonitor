@@ -9,7 +9,6 @@ import QtQuick.Controls 2.15 as QQC2
 import QtQml.Models 2.15
 
 import org.kde.kirigami 2.20 as Kirigami
-import org.kde.kquickcontrolsaddons 2.1 as KQuickControlsAddons
 
 ColumnLayout {
     id: root
@@ -79,7 +78,7 @@ ColumnLayout {
                 let sensors = JSON.parse(string);
                 clear();
                 sensors.forEach((sensor) => append(sensor));
-                save()
+                save();
             }
 
             function saveString() {
