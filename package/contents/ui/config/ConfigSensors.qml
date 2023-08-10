@@ -82,6 +82,7 @@ ColumnLayout {
                 let sensors = JSON.parse(string);
                 clear();
                 sensors.forEach((sensor) => append(sensor));
+                save()
             }
 
             function saveString() {
