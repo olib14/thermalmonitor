@@ -14,11 +14,6 @@ import org.kde.kirigami as Kirigami
 ColumnLayout {
     id: delegate
 
-    // TODO: synchronise widths between delegates?
-    // TODO: synchronise nameLabel visibility between delegates (when one, all)
-
-    // TODO: Reserve space for 100 *C and center within it
-
     property string name
     property string sensorId
     property double updateRateLimit: Plasmoid.configuration.updateInterval
