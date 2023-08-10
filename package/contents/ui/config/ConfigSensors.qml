@@ -58,26 +58,24 @@ ColumnLayout {
         reuseItems: true
 
         model: ListModel {
-            Component.onCompleted: {
-                loadString(root.cfg_sensors)
-            }
+            Component.onCompleted: { loadString(root.cfg_sensors); }
 
             function loadString(string) {
-                let sensors = JSON.parse(string)
-                clear()
-                sensors.forEach((sensor) => append(sensor))
+                let sensors = JSON.parse(string);
+                clear();
+                sensors.forEach((sensor) => append(sensor));
             }
 
             function saveString() {
-                let sensors = []
+                let sensors = [];
                 for (var i = 0; i < count; ++i) {
-                    sensors.push(get(i))
+                    sensors.push(get(i));
                 }
-                return JSON.stringify(sensors)
+                return JSON.stringify(sensors);
             }
 
             function save() {
-                root.cfg_sensors = saveString()
+                root.cfg_sensors = saveString();
             }
         }
 
@@ -91,7 +89,6 @@ ColumnLayout {
                 id: sensorDelegate
 
                 enabled: root.libAvailable
-                //alternatingBackground: true // TODO: Doesn't work?
 
                 RowLayout {
                     spacing: Kirigami.Units.largeSpacing
@@ -100,8 +97,8 @@ ColumnLayout {
                         listItem: sensorDelegate
                         listView: sensorsView
                         onMoveRequested: (oldIndex, newIndex) => {
-                            sensorsView.model.move(oldIndex, newIndex, 1)
-                            sensorsView.model.save()
+                            sensorsView.model.move(oldIndex, newIndex, 1);
+                            sensorsView.model.save();
                         }
                     }
 
@@ -121,8 +118,8 @@ ColumnLayout {
                         text: i18n("Delete")
                         icon.name: "edit-delete-remove"
                         onTriggered: {
-                            sensorsView.model.remove(index, 1)
-                            sensorsView.model.save()
+                            sensorsView.model.remove(index, 1);
+                            sensorsView.model.save();
                         }
                     }
                 ]
@@ -206,12 +203,12 @@ ColumnLayout {
         }
 
         onEditingSensorChanged: {
-            sensorNameField.text = editSensorSheet.editingSensor.name
+            sensorNameField.text = editSensorSheet.editingSensor.name;
         }
 
         function openSensor(sensor) {
-            editingSensor = sensor
-            open()
+            editingSensor = sensor;
+            open();
         }
     }
 

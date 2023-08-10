@@ -27,12 +27,12 @@ PlasmoidItem {
                 case PlasmaCore.Types.Planar:
                 case PlasmaCore.Types.MediaCanter:
                 case PlasmaCore.Types.Application:
-                    return false
+                    return false;
                 case PlasmaCore.Types.Vertical:
                 case PlasmaCore.Types.Horizontal:
-                    return true
+                    return true;
                 default:
-                    return false
+                    return false;
             }
         }
 
@@ -42,15 +42,15 @@ PlasmoidItem {
                 case PlasmaCore.Types.MediaCanter:
                 case PlasmaCore.Types.Application:
                     if (root.height > root.width) {
-                        return true
+                        return true;
                     } else {
-                        return false
+                        return false;
                     }
                 case PlasmaCore.Types.Vertical:
-                    return true
+                    return true;
                 case PlasmaCore.Types.Horizontal:
                 default:
-                    return false
+                    return false;
             }
         }
 
@@ -71,7 +71,7 @@ PlasmoidItem {
         PlasmaComponents.Button {
             visible: !root.hasSensors
             text: "Configure…"
-            onClicked: Plasmoid.internalAction("configure").trigger();
+            onClicked: Plasmoid.internalAction("configure").trigger()
         }
     }
 }
