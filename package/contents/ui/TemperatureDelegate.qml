@@ -3,13 +3,13 @@
     SPDX-License-Identifier: WTFPL
 */
 
-import QtQuick
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Layouts 1.1
 
-import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.components as PlasmaComponents
-import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.kirigami 2.20 as Kirigami
 
 ColumnLayout {
     id: delegate
@@ -74,6 +74,6 @@ ColumnLayout {
         font: Kirigami.Theme.smallFont
         text: delegate.name
         opacity: 0.6
-        visible: text && root.height >= tempLabel.contentHeight + contentHeight * 0.8
+        visible: text && fullRepresentation.height >= tempLabel.contentHeight + contentHeight * 0.8
     }
 }

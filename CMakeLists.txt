@@ -9,7 +9,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
-find_package(KF6 REQUIRED COMPONENTS
+find_package(KF5 REQUIRED COMPONENTS
     Plasma
 )
 

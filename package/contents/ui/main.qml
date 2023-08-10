@@ -3,15 +3,15 @@
     SPDX-License-Identifier: WTFPL
 */
 
-import QtQuick
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Layouts 1.1
 
-import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.components as PlasmaComponents
-import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.kirigami 2.20 as Kirigami
 
-PlasmoidItem {
+Item {
     id: root
 
     readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors)
@@ -19,8 +19,9 @@ PlasmoidItem {
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
     Plasmoid.configurationRequired: !sensors.length
 
-    preferredRepresentation: fullRepresentation
-    fullRepresentation: GridLayout {
+    Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
+    Plasmoid.fullRepresentation: GridLayout {
+        id: fullRepresentation
 
         readonly property bool isPanel: {
             switch (Plasmoid.formFactor) {
@@ -41,7 +42,7 @@ PlasmoidItem {
                 case PlasmaCore.Types.Planar:
                 case PlasmaCore.Types.MediaCanter:
                 case PlasmaCore.Types.Application:
-                    if (root.height > root.width) {
+                    if (fullRepresentation.height > fullRepresentation.width) {
                         return true
                     } else {
                         return false
@@ -55,8 +56,8 @@ PlasmoidItem {
         }
 
         flow:   isVertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
-        width:  isVertical ? root.width : implicitWidth
-        height: isVertical ? implicitHeight : root.height
+        width:  isVertical ? fullRepresentation.width : implicitWidth
+        height: isVertical ? implicitHeight : fullRepresentation.height
 
         columnSpacing: Kirigami.Units.largeSpacing
         rowSpacing:    Kirigami.Units.largeSpacing
@@ -98,7 +99,6 @@ PlasmoidItem {
             source: Plasmoid.icon
 
             active: mouseArea.containsMouse
-            activeFocusOnTab: true
 
             MouseArea {
                 id: mouseArea

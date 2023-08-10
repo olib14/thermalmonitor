@@ -3,7 +3,7 @@
     SPDX-License-Identifier: WTFPL
 */
 
-import org.kde.ksysguard.sensors as Sensors
+import org.kde.ksysguard.sensors 1.0 as Sensors
 
 // Used in a Loader to make UI load when
 // org.kde.ksysguard.sensors is not available

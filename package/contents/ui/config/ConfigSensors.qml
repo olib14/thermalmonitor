@@ -3,14 +3,13 @@
     SPDX-License-Identifier: WTFPL
 */
 
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls as QQC2
-import QtQml.Models
+import QtQuick 2.15
+import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.15 as QQC2
+import QtQml.Models 2.15
 
-import org.kde.kirigami as Kirigami
-import org.kde.kirigamiaddons.components as KirigamiComponents
-import org.kde.kquickcontrolsaddons as KQuickControlsAddons
+import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kquickcontrolsaddons 2.1 as KQuickControlsAddons
 
 ColumnLayout {
     id: root
@@ -27,14 +26,13 @@ ColumnLayout {
             Layout.fillWidth: true
         }
 
-        KirigamiComponents.Banner {
+        Kirigami.InlineMessage {
             id: libBanner
 
             Layout.fillWidth: true
 
             visible: !root.libAvailable
 
-            title: "Required libraries missing"
             text: "The libraries <i>ksystemstats</i> (and <i>libksysguard</i>), <i>kitemmodels</i> are used to retrieve sensor data and are required to use this applet. Please ensure they are installed."
             type: Kirigami.MessageType.Error
         }
@@ -178,11 +176,6 @@ ColumnLayout {
 
         property var editingSensor: null
 
-        width:  Kirigami.Units.gridUnit * 20
-        height: Kirigami.Units.gridUnit * 8
-
-        anchors.centerIn: root
-
         title: "Edit Sensor"
 
         Kirigami.FormLayout {
@@ -190,7 +183,7 @@ ColumnLayout {
             Kirigami.SelectableLabel {
                 Kirigami.FormData.label: "Sensor:"
 
-                text: editSensorSheet.editingSensor?.sensorId || ""
+                text: editSensorSheet.editingSensor.sensorId || ""
             }
 
             QQC2.TextField {
@@ -218,11 +211,6 @@ ColumnLayout {
     Kirigami.OverlaySheet {
         id: addSensorSheet
 
-        width:  Kirigami.Units.gridUnit * 20
-        height: Kirigami.Units.gridUnit * 16
-
-        anchors.centerIn: root
-
         title: "Add Sensor"
 
         ListView {
@@ -236,7 +224,7 @@ ColumnLayout {
 
             reuseItems: true
 
-            model: availableSensors?.availableSensorsModel
+            model: availableSensors.availableSensorsModel
 
             section {
                 property: "section"

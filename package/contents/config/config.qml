@@ -3,8 +3,8 @@
     SPDX-License-Identifier: WTFPL
 */
 
-import QtQuick
-import org.kde.plasma.configuration
+import QtQuick 2.15
+import org.kde.plasma.configuration 2.0
 
 ConfigModel {
 
@@ -12,7 +12,6 @@ ConfigModel {
          name: i18n("Sensors")
          icon: "temperature-normal"
          source: "config/ConfigSensors.qml"
-         includeMargins: false
     }
 
     /*

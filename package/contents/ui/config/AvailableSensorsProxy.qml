@@ -3,12 +3,12 @@
     SPDX-License-Identifier: WTFPL
 */
 
-import QtQuick
+import QtQuick 2.15
 
 import org.kde.kitemmodels 1.0 as KItemModels
-import org.kde.ksysguard.sensors as Sensors
+import org.kde.ksysguard.sensors 1.0 as Sensors
 
-import org.kde.kirigami as Kirigami
+import org.kde.kirigami 2.20 as Kirigami
 
 // Used in a Loader to make UI load when
 // org.kde.ksysguard.sensors is not available
