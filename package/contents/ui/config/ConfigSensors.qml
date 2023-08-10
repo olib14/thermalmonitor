@@ -16,6 +16,7 @@ ColumnLayout {
 
     property string cfg_sensors
 
+    readonly property bool hasSensors: sensorsView.model.count
     readonly property bool libAvailable: availableSensorsLoader.status === Loader.Ready
     readonly property bool clipboardAvailable: clipboardLoader.status === Loader.Ready
 
@@ -135,6 +136,16 @@ ColumnLayout {
                 ]
             }
         }
+
+        Kirigami.PlaceholderMessage {
+            anchors.centerIn: parent
+
+            visible: root.libAvailable && !root.hasSensors
+
+            icon.name: "temperature-normal"
+            text: "No sensors"
+            explanation: "Click <i>%1</i> to get started".arg(addSensorButton.text)
+        }
     }
 
     ColumnLayout {
@@ -153,6 +164,8 @@ ColumnLayout {
             enabled: root.libAvailable
 
             QQC2.Button {
+                id: addSensorButton
+
                 text: "Add Sensor…"
                 icon.name: "list-add"
                 onClicked: addSensorSheet.open()
