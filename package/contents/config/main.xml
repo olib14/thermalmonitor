@@ -13,22 +13,16 @@
         <entry name="sensors" type="String">
             <default></default>
         </entry>
-        <!--
-        <entry name="profile" type="String">
-            <default></default>
-        </entry>
-        <entry name="useCustomConfig" type="Bool">
-            <default>false</default>
-        </entry>
-        -->
     </group>
 
+    <!--
     <group name="Appearance">
     </group>
+    -->
 
     <group name="Misc">
         <entry name="updateInterval" type="Double">
-            <default>3.0</default>
+            <default>1.0</default>
         </entry>
         <entry name="temperatureUnit" type="Enum">
             <choices>

@@ -21,7 +21,14 @@ ColumnLayout {
 
     property string name
     property string sensorId
+    property double updateRateLimit: Plasmoid.configuration.updateInterval
+    property int unit: Plasmoid.configuration.temperatureUnit
+
     property alias sensor: sensorLoader.item
+
+    onUpdateRateLimitChanged: {
+        if (sensor) sensor.updateRateLimit = updateRateLimit * 1000;
+    }
 
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
@@ -30,7 +37,10 @@ ColumnLayout {
     Loader {
         id: sensorLoader
 
-        Component.onCompleted: setSource("SensorProxy.qml", { "sensorId": sensorId })
+        Component.onCompleted: setSource("SensorProxy.qml", {
+            "sensorId": sensorId,
+            "updateRateLimit": updateRateLimit * 1000
+        })
     }
 
     PlasmaComponents.Label {
@@ -41,7 +51,15 @@ ColumnLayout {
         font: Kirigami.Theme.defaultFont
         text: {
             if (sensor && sensor.value !== undefined) {
-                return sensor.value.toFixed(0) + " °C"
+                switch(unit) {
+                    default:
+                    case 0:
+                        return sensor.value.toFixed(0) + " °C"
+                    case 1:
+                        return (sensor.value * 1.8 + 32).toFixed(0) + " °F"
+                    case 2:
+                        return (sensor.value  + 273.15).toFixed(0) + " K"
+                }
             } else {
                 return "-"
             }
