@@ -28,12 +28,12 @@ Item {
                 case PlasmaCore.Types.Planar:
                 case PlasmaCore.Types.MediaCanter:
                 case PlasmaCore.Types.Application:
-                    return false
+                    return false;
                 case PlasmaCore.Types.Vertical:
                 case PlasmaCore.Types.Horizontal:
-                    return true
+                    return true;
                 default:
-                    return false
+                    return false;
             }
         }
 
@@ -43,15 +43,15 @@ Item {
                 case PlasmaCore.Types.MediaCanter:
                 case PlasmaCore.Types.Application:
                     if (fullRepresentation.height > fullRepresentation.width) {
-                        return true
+                        return true;
                     } else {
-                        return false
+                        return false;
                     }
                 case PlasmaCore.Types.Vertical:
-                    return true
+                    return true;
                 case PlasmaCore.Types.Horizontal:
                 default:
-                    return false
+                    return false;
             }
         }
 

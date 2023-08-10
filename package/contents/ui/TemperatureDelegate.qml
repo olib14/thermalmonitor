@@ -27,7 +27,7 @@ ColumnLayout {
     property alias sensor: sensorLoader.item
 
     onUpdateRateLimitChanged: {
-        if (sensor) sensor.updateRateLimit = updateRateLimit * 1000;
+        if (sensor) { sensor.updateRateLimit = updateRateLimit * 1000; }
     }
 
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -54,14 +54,14 @@ ColumnLayout {
                 switch(unit) {
                     default:
                     case 0:
-                        return sensor.value.toFixed(0) + " °C"
+                        return sensor.value.toFixed(0) + " °C";
                     case 1:
-                        return (sensor.value * 1.8 + 32).toFixed(0) + " °F"
+                        return (sensor.value * 1.8 + 32).toFixed(0) + " °F";
                     case 2:
-                        return (sensor.value  + 273.15).toFixed(0) + " K"
+                        return (sensor.value  + 273.15).toFixed(0) + " K";
                 }
             } else {
-                return "-"
+                return "-";
             }
         }
     }

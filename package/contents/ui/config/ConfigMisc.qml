@@ -10,6 +10,7 @@ import QtQuick.Controls 2.15 as QQC2
 import org.kde.kirigami 2.20 as Kirigami
 
 Kirigami.FormLayout {
+
     property double cfg_updateInterval
     property int cfg_temperatureUnit
 
@@ -51,21 +52,21 @@ Kirigami.FormLayout {
         }
 
         textFromValue: (value, locale) => {
-            return Number(fromInt(value)).toLocaleString(locale, 'f', 1) + " s"
+            return Number(fromInt(value)).toLocaleString(locale, 'f', 1) + " s";
         }
 
         valueFromText: (text, locale) => {
-            return Math.round(toInt(Number.fromLocaleString(locale, text.split(" ")[0])))
+            return Math.round(toInt(Number.fromLocaleString(locale, text.split(" ")[0])));
         }
 
         onValueChanged: cfg_updateInterval = fromInt(value)
 
         function toInt(value) {
-            return value * 10
+            return value * 10;
         }
 
         function fromInt(value) {
-            return value / 10
+            return value / 10;
         }
     }
 

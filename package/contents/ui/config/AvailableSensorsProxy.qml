@@ -25,13 +25,13 @@ Item {
         filterRowCallback: (row, parent) => {
             // Checking sensorId length filters out non-sensors
             // TODO: Filter out group and non-temperature sensors (via unit) more sensibly
-            let sensorId = sourceModel.data(sourceModel.index(row, 0), Sensors.SensorTreeModel.SensorId)
-            let display = sourceModel.data(sourceModel.index(row, 0), Qt.DisplayRole)
-            return sensorId.length > 0 && sensorId.toLowerCase().includes("temp") && !display.includes("[Group]")
+            let sensorId = sourceModel.data(sourceModel.index(row, 0), Sensors.SensorTreeModel.SensorId);
+            let display = sourceModel.data(sourceModel.index(row, 0), Qt.DisplayRole);
+            return sensorId.length > 0 && sensorId.toLowerCase().includes("temp") && !display.includes("[Group]");
         }
 
         onRowsInserted: (parent, first, last) => {
-            //console.log("rowsInserted", first, last)
+            //console.log("rowsInserted", first, last);
             for (var i = first; i <= last; ++i) {
                 // Ignore when outside range
                 // Rows are initially inserted strangely, so this suppresses errors
@@ -39,27 +39,27 @@ Item {
                 if (i > availableSensorsModel.count)
                     return;
 
-                let index = sensorsModel.index(i, 0)
-                let name = sensorsModel.data(index, Qt.DisplayRole).replace(" (°C)", "")
-                let sensorId = sensorsModel.data(index, Sensors.SensorTreeModel.SensorId)
+                let index = sensorsModel.index(i, 0);
+                let name = sensorsModel.data(index, Qt.DisplayRole).replace(" (°C)", "");
+                let sensorId = sensorsModel.data(index, Sensors.SensorTreeModel.SensorId);
 
-                let categoryIndex = flatModel.mapToSource(sensorsModel.mapToSource(index))
+                let categoryIndex = flatModel.mapToSource(sensorsModel.mapToSource(index));
                 while (categoryIndex.parent.valid) {
-                    categoryIndex = categoryIndex.parent
+                    categoryIndex = categoryIndex.parent;
                 }
 
-                let section = treeModel.data(categoryIndex, Qt.DisplayRole)
+                let section = treeModel.data(categoryIndex, Qt.DisplayRole);
 
-                //console.log("adding sensor:", name, "(" + section + ", " + sensorId + ")")
-                availableSensorsModel.set(i, { "name": name, "sensorId": sensorId, "section": section })
+                //console.log("adding sensor:", name, "(" + section + ", " + sensorId + ")");
+                availableSensorsModel.set(i, { "name": name, "sensorId": sensorId, "section": section });
             }
         }
 
         onRowsRemoved: (parent, first, last) => {
-            //console.log("rowsRemoved", first, last)
+            //console.log("rowsRemoved", first, last);
             for (var i = last; i >= first; --i) {
-                //console.log("removing sensor", i)
-                availableSensorsModel.remove(i)
+                //console.log("removing sensor", i);
+                availableSensorsModel.remove(i);
             }
         }
     }
