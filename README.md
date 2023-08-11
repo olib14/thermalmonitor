@@ -2,8 +2,7 @@
 
 A KDE Plasmoid for displaying system temperatures.
 
-![screenshot](preview-panel.png)
-![screenshot](preview-desktop.png)
+![screenshot](preview-all-white.png)
 
 Inspired by:
 
