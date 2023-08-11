@@ -14,7 +14,7 @@ import org.kde.kirigami 2.20 as Kirigami
 Item {
     id: root
 
-    readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors)
+    readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors || "[]")
     readonly property bool hasSensors: sensors.length
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
