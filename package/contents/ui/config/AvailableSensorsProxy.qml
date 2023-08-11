@@ -23,11 +23,12 @@ Item {
     property var sensorsModel: KItemModels.KSortFilterProxyModel {
         sourceModel: flatModel
         filterRowCallback: (row, parent) => {
-            // Checking sensorId length filters out non-sensors
-            // TODO: Filter out group and non-temperature sensors (via unit) more sensibly
             let sensorId = sourceModel.data(sourceModel.index(row, 0), Sensors.SensorTreeModel.SensorId);
             let display = sourceModel.data(sourceModel.index(row, 0), Qt.DisplayRole);
-            return sensorId.length > 0 && sensorId.toLowerCase().includes("temp") && !display.includes("[Group]");
+
+            // Filter, remove non-sensors, only temperature, and remove groups
+            // TODO: Remove non-temperature sensors and groups more sensibly
+            return sensorId.length > 0 && display.includes("(°C)") && !display.includes("[");
         }
 
         onRowsInserted: (parent, first, last) => {
