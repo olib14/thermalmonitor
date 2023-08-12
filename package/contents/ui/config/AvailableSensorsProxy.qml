@@ -45,11 +45,19 @@ Item {
                 let sensorId = sensorsModel.data(index, Sensors.SensorTreeModel.SensorId);
 
                 let categoryIndex = flatModel.mapToSource(sensorsModel.mapToSource(index));
+                let subcategoryIndex = null
                 while (categoryIndex.parent.valid) {
+                    subcategoryIndex = categoryIndex
                     categoryIndex = categoryIndex.parent;
                 }
 
                 let section = treeModel.data(categoryIndex, Qt.DisplayRole);
+
+                // For Hardware Sensors, prepend the subcategory name
+                if (sensorId.includes("lmsensors")) {
+                    let subcategoryName = treeModel.data(subcategoryIndex, Qt.DisplayRole);
+                    name = subcategoryName + ": " + name;
+                }
 
                 //console.log("adding sensor:", name, "(" + section + ", " + sensorId + ")");
                 availableSensorsModel.set(i, { "name": name, "sensorId": sensorId, "section": section });
