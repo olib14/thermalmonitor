@@ -312,6 +312,7 @@ ColumnLayout {
 
             Loader {
                 id: clipboardLoader
+                visible: false
                 Component.onCompleted: setSource("ClipboardProxy.qml")
             }
         }
