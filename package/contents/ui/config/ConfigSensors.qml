@@ -169,6 +169,8 @@ ColumnLayout {
             width:  Kirigami.Units.gridUnit * 20
             height: Kirigami.Units.gridUnit * 8
 
+            anchors.centerIn: parent
+
             title: "Edit Sensor"
 
             Kirigami.FormLayout {
@@ -204,8 +206,10 @@ ColumnLayout {
         Kirigami.OverlaySheet {
             id: addSensorSheet
 
-            width:  Kirigami.Units.gridUnit * 20
-            height: Kirigami.Units.gridUnit * 16
+            width:  sensorsView.width - Kirigami.Units.gridUnit * 4
+            height: sensorsView.height - Kirigami.Units.gridUnit * 4
+
+            anchors.centerIn: parent
 
             title: "Add Sensor"
 
