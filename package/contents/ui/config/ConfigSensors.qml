@@ -235,10 +235,33 @@ ColumnLayout {
                 }
 
                 delegate: Kirigami.SwipeListItem {
-                    id: sensorDelegate
 
-                    QQC2.Label {
-                        text: model.name
+                    RowLayout {
+                        QQC2.Label {
+                            text: model.name
+
+                            MouseArea {
+                                id: sensorDelegateMouseArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                            }
+                        }
+
+                        QQC2.Label {
+                            Layout.fillWidth: true
+                            Layout.leftMargin: Kirigami.Units.smallSpacing
+
+                            font: Kirigami.Theme.smallFont
+                            text: model.sensorId
+                            opacity: sensorDelegateMouseArea.containsMouse ? 0.6 : 0
+
+                            Behavior on opacity {
+                                NumberAnimation {
+                                    duration: Kirigami.Units.shortDuration
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
+                        }
                     }
 
                     actions: [
