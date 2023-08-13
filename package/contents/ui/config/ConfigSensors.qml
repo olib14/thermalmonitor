@@ -135,12 +135,12 @@ ColumnLayout {
                     actions: [
                         Kirigami.Action {
                             text: i18n("Edit")
-                            icon.name: "edit-entry"
+                            icon.name: "edit-entry-symbolic"
                             onTriggered: editSensorSheet.openSensor(sensorsView.model.get(index))
                         },
                         Kirigami.Action {
                             text: i18n("Delete")
-                            icon.name: "edit-delete-remove"
+                            icon.name: "edit-delete-remove-symbolic"
                             onTriggered: {
                                 sensorsView.model.remove(index, 1);
                                 sensorsView.model.save();
@@ -267,7 +267,7 @@ ColumnLayout {
                     actions: [
                         Kirigami.Action {
                             text: i18n("Add")
-                            icon.name: "list-add"
+                            icon.name: "list-add-symbolic"
                             onTriggered: {
                                 sensorsView.model.append({
                                     "name": model.name,
@@ -301,7 +301,7 @@ ColumnLayout {
                 id: addSensorButton
 
                 text: "Add Sensor…"
-                icon.name: "list-add"
+                icon.name: "list-add-symbolic"
                 onClicked: addSensorSheet.open()
             }
 
@@ -311,14 +311,14 @@ ColumnLayout {
 
             QQC2.Button {
                 text: "Import"
-                icon.name: "document-import"
+                icon.name: "document-import-symbolic"
                 enabled: root.clipboardAvailable
                 onClicked: sensorsView.model.loadString(clipboardLoader.item.content)
             }
 
             QQC2.Button {
                 text: "Export"
-                icon.name: "document-export"
+                icon.name: "document-export-symbolic"
                 enabled: root.clipboardAvailable
                 onClicked: clipboardLoader.item.content = sensorsView.model.saveString()
             }
