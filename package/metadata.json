@@ -13,7 +13,7 @@
 			}
 		],
         "Version": "0.1.1",
-		"License": "WTFPL",
+		"License": "MIT",
 		"Website": "https://invent.kde.org/olib/thermalmonitor",
 		"BugReportUrl": "https://invent.kde.org/olib/thermalmonitor/-/issues"
     },

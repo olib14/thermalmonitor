@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2023 Oliver Beard <olib141@outlook.com>
-    SPDX-License-Identifier: WTFPL
+    SPDX-License-Identifier: MIT
 */
 
 import QtQuick 2.15
