@@ -81,6 +81,8 @@ ColumnLayout {
             reuseItems: true
 
             model: ListModel {
+                id: sensorsModel
+
                 Component.onCompleted: { loadString(root.cfg_sensors); }
 
                 function loadString(string) {
@@ -236,9 +238,22 @@ ColumnLayout {
 
                 delegate: Kirigami.SwipeListItem {
 
+                    // Disable when sensor is already present
+                    enabled: {
+                        for (var i = 0; i < sensorsModel.count; ++i) {
+                            if (sensorsModel.get(i).sensorId === model.sensorId) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+
                     RowLayout {
                         QQC2.Label {
                             text: model.name
+                            elide: Text.ElideRight
+
+                            opacity: enabled ? 1 : 0.6
 
                             MouseArea {
                                 id: sensorDelegateMouseArea
@@ -253,7 +268,8 @@ ColumnLayout {
 
                             font: Kirigami.Theme.smallFont
                             text: model.sensorId
-                            opacity: sensorDelegateMouseArea.containsMouse ? 0.6 : 0
+                            elide: Text.ElideMiddle
+                            opacity: (sensorDelegateMouseArea.containsMouse ? 0.6 : 0) * (enabled ? 1 : 0.6)
 
                             Behavior on opacity {
                                 NumberAnimation {
