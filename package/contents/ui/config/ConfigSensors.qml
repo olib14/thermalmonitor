@@ -168,9 +168,11 @@ ColumnLayout {
             title: "Edit Sensor"
 
             Kirigami.FormLayout {
+                id: editSensorsForm
 
                 Kirigami.SelectableLabel {
                     Kirigami.FormData.label: "Sensor:"
+                    Layout.fillWidth: true
 
                     text: editSensorSheet.editingSensor.sensorId || ""
                 }
@@ -179,6 +181,7 @@ ColumnLayout {
                     id: sensorNameField
 
                     Kirigami.FormData.label: "Name:"
+                    Layout.fillWidth: true
 
                     onTextChanged: {
                         editSensorSheet.editingSensor.name = text;
@@ -236,7 +239,11 @@ ColumnLayout {
                     }
 
                     RowLayout {
+                        spacing: Kirigami.Units.smallSpacing
+
                         QQC2.Label {
+                            Layout.maximumWidth: parent.width
+
                             text: model.name
                             elide: Text.ElideRight
 
@@ -251,7 +258,6 @@ ColumnLayout {
 
                         QQC2.Label {
                             Layout.fillWidth: true
-                            Layout.leftMargin: Kirigami.Units.smallSpacing
 
                             font: Kirigami.Theme.smallFont
                             text: model.sensorId
@@ -295,8 +301,6 @@ ColumnLayout {
         RowLayout {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            Layout.leftMargin: Kirigami.Units.largeSpacing
-            Layout.rightMargin: Kirigami.Units.largeSpacing
 
             enabled: root.libAvailable
 
