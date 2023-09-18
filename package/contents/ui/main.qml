@@ -25,7 +25,7 @@ PlasmoidItem {
         readonly property bool isPanel: {
             switch (Plasmoid.formFactor) {
                 case PlasmaCore.Types.Planar:
-                case PlasmaCore.Types.MediaCanter:
+                case PlasmaCore.Types.MediaCenter:
                 case PlasmaCore.Types.Application:
                     return false;
                 case PlasmaCore.Types.Vertical:
@@ -39,7 +39,7 @@ PlasmoidItem {
         readonly property bool isVertical: {
             switch (Plasmoid.formFactor) {
                 case PlasmaCore.Types.Planar:
-                case PlasmaCore.Types.MediaCanter:
+                case PlasmaCore.Types.MediaCenter:
                 case PlasmaCore.Types.Application:
                     if (root.height > root.width) {
                         return true;
@@ -62,8 +62,6 @@ PlasmoidItem {
         rowSpacing:    Kirigami.Units.smallSpacing
 
         Repeater {
-            id: delegateRepeater
-
             model: root.sensors
             delegate: TemperatureDelegate { name: modelData.name; sensorId: modelData.sensorId }
         }
