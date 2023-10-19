@@ -22,8 +22,10 @@ PlasmoidItem {
     preferredRepresentation: hasSensors ? fullRepresentation : compactRepresentation
     fullRepresentation: GridLayout {
 
-        readonly property bool isPanel: {
+        /*
+        readonly property bool inPanel: {
             switch (Plasmoid.formFactor) {
+                default:
                 case PlasmaCore.Types.Planar:
                 case PlasmaCore.Types.MediaCenter:
                 case PlasmaCore.Types.Application:
@@ -31,13 +33,13 @@ PlasmoidItem {
                 case PlasmaCore.Types.Vertical:
                 case PlasmaCore.Types.Horizontal:
                     return true;
-                default:
-                    return false;
             }
         }
+        */
 
         readonly property bool isVertical: {
             switch (Plasmoid.formFactor) {
+                default:
                 case PlasmaCore.Types.Planar:
                 case PlasmaCore.Types.MediaCenter:
                 case PlasmaCore.Types.Application:
@@ -49,7 +51,6 @@ PlasmoidItem {
                 case PlasmaCore.Types.Vertical:
                     return true;
                 case PlasmaCore.Types.Horizontal:
-                default:
                     return false;
             }
         }
