@@ -9,9 +9,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
-find_package(KF6 REQUIRED COMPONENTS
-    Plasma
-)
+find_package(Plasma REQUIRED)
 
 #add_subdirectory(translations) # TODO
 
