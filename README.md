@@ -21,19 +21,19 @@ The libraries `ksystemstats`, `libksysguard`, `kitemmodels` and `kdeclarative` m
 
 ## Installation
 
-It is recommended to install the applet via "Get New…" or Discover, which obtain the applet [from the KDE Store](https://store.kde.org/p/2070765). Manual installation is only required for development and testing, especially for Plasma 6.
+It is recommended to install the applet via "Get New…" or Discover, which obtain the applet [from the KDE Store](https://store.kde.org/p/2070765). Manual installation is only required for development and testing.
 
 ```bash
 git clone https://invent.kde.org/olib/thermalmonitor.git
-cd thermalmonitor && git checkout kf5
+cd thermalmonitor
 cmake . && sudo make install
 ```
 
 Ensure you are using the correct branch. Plasma 5 users need to use branch `kf5`.
 
-It may be necessary to restart Plasma by logging out and back in or by doing `kquitapp5 plasmashell && kstart5 plasmashell &>/dev/null`.
+It may be necesary to restart Plasma after installing.
 
-### Plasma 6 and kdesrc-build
+### kdesrc-build
 
 The applet can be installed into kdesrc-build's prefix:
 
@@ -41,8 +41,6 @@ The applet can be installed into kdesrc-build's prefix:
 cmake -B build -DCMAKE_PREFIX_PATH="~/kde/usr" -DCMAKE_INSTALL_PREFIX="~/kde/usr"
 cd build && make install
 ```
-
-If your kdesrc-build folder is `~/kde6` ensure you specify it above. As above, make sure you have checked out the correct branch.
 
 ## Uninstallation
 
@@ -52,4 +50,4 @@ If you have installed the applet via "Get New…" or Discover, you can remove it
 sudo make uninstall
 ```
 
-Of course, there is no need to use sudo for kdesrc-build installations.
+There is no need to use sudo for kdesrc-build installations.
