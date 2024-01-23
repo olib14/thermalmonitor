@@ -12,16 +12,7 @@ ConfigModel {
          name: i18n("Sensors")
          icon: "temperature-normal"
          source: "config/ConfigSensors.qml"
-         includeMargins: false
     }
-
-    /*
-    ConfigCategory {
-         name: i18n("Appearance")
-         icon: "preferences-desktop-color"
-         source: "config/ConfigAppearance.qml"
-    }
-    */
 
     ConfigCategory {
          name: i18n("Misc")

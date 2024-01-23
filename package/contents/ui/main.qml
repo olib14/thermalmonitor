@@ -14,7 +14,7 @@ import org.kde.kirigami as Kirigami
 PlasmoidItem {
     id: root
 
-    readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors || "[]")
+    readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors)
     readonly property bool hasSensors: sensors.length
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
@@ -22,27 +22,12 @@ PlasmoidItem {
     preferredRepresentation: hasSensors ? fullRepresentation : compactRepresentation
     fullRepresentation: GridLayout {
 
-        /*
-        readonly property bool inPanel: {
-            switch (Plasmoid.formFactor) {
-                default:
-                case PlasmaCore.Types.Planar:
-                case PlasmaCore.Types.MediaCenter:
-                case PlasmaCore.Types.Application:
-                    return false;
-                case PlasmaCore.Types.Vertical:
-                case PlasmaCore.Types.Horizontal:
-                    return true;
-            }
-        }
-        */
-
         readonly property bool isVertical: {
             switch (Plasmoid.formFactor) {
-                default:
                 case PlasmaCore.Types.Planar:
                 case PlasmaCore.Types.MediaCenter:
                 case PlasmaCore.Types.Application:
+                default:
                     if (root.height > root.width) {
                         return true;
                     } else {
@@ -55,9 +40,10 @@ PlasmoidItem {
             }
         }
 
-        flow:   isVertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
         width:  isVertical ? root.width : implicitWidth
         height: isVertical ? implicitHeight : root.height
+
+        flow:   isVertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
 
         columnSpacing: Kirigami.Units.smallSpacing
         rowSpacing:    Kirigami.Units.smallSpacing

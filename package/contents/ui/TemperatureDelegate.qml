@@ -16,8 +16,9 @@ ColumnLayout {
 
     property string name
     property string sensorId
-    property double updateRateLimit: Plasmoid.configuration.updateInterval
-    property int unit: Plasmoid.configuration.temperatureUnit
+
+    readonly property double updateRateLimit: Plasmoid.configuration.updateInterval
+    readonly property int unit: Plasmoid.configuration.temperatureUnit
 
     property alias sensor: sensorLoader.item
 
@@ -48,9 +49,9 @@ ColumnLayout {
         font: Kirigami.Theme.defaultFont
         text: {
             if (sensor && sensor.value !== undefined) {
-                switch(unit) {
-                    default:
+                switch (unit) {
                     case 0:
+                    default:
                         return sensor.value.toFixed(0) + " °C";
                     case 1:
                         return (sensor.value * 1.8 + 32).toFixed(0) + " °F";

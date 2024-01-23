@@ -7,12 +7,19 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 
+import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
-Kirigami.FormLayout {
+KCM.SimpleKCM {
 
     property double cfg_updateInterval
     property int cfg_temperatureUnit
+
+    // HACK: Present to suppress errors
+    property string cfg_sensors
+    property string cfg_sensorsDefault
+    property double cfg_updateIntervalDefault
+    property int cfg_temperatureUnitDefault
 
     onCfg_updateIntervalChanged: {
         updateIntervalSpinBox.value = updateIntervalSpinBox.toInt(cfg_updateInterval);
@@ -35,72 +42,71 @@ Kirigami.FormLayout {
 
     Component.onCompleted: cfg_temperatureUnitChanged()
 
-    QQC2.SpinBox {
-        id: updateIntervalSpinBox
+    Kirigami.FormLayout {
 
-        Kirigami.FormData.label: "Update interval:"
+        QQC2.SpinBox {
+            id: updateIntervalSpinBox
 
-        stepSize: toInt(0.1)
-        from: toInt(1)
-        to: toInt(5)
+            Kirigami.FormData.label: "Update interval:"
 
-        validator: DoubleValidator {
-            bottom: updateIntervalSpinBox.from
-            top: updateIntervalSpinBox.to
-            decimals: 1
-            notation: DoubleValidator.StandardNotation
+            stepSize: toInt(0.1)
+            from: toInt(1)
+            to: toInt(5)
+
+            validator: DoubleValidator {
+                bottom: updateIntervalSpinBox.from
+                top: updateIntervalSpinBox.to
+                decimals: 1
+                notation: DoubleValidator.StandardNotation
+            }
+
+            textFromValue: (value, locale) => {
+                return Number(fromInt(value)).toLocaleString(locale, 'f', 1) + " s";
+            }
+
+            valueFromText: (text, locale) => {
+                return Math.round(toInt(Number.fromLocaleString(locale, text.split(" ")[0])));
+            }
+
+            onValueChanged: cfg_updateInterval = fromInt(value)
+
+            function toInt(value) {
+                return value * 10;
+            }
+
+            function fromInt(value) {
+                return value / 10;
+            }
         }
 
-        textFromValue: (value, locale) => {
-            return Number(fromInt(value)).toLocaleString(locale, 'f', 1) + " s";
+        Item { Kirigami.FormData.isSection: true }
+
+        QQC2.ButtonGroup { id: temperatureUnitGroup }
+
+        QQC2.RadioButton {
+            id: temperatureUnitCelciusButton
+
+            Kirigami.FormData.label: "Temperature unit:"
+            QQC2.ButtonGroup.group: temperatureUnitGroup
+
+            text: "°C"
+            onCheckedChanged: if (checked) { cfg_temperatureUnit = 0; }
         }
 
-        valueFromText: (text, locale) => {
-            return Math.round(toInt(Number.fromLocaleString(locale, text.split(" ")[0])));
+        QQC2.RadioButton {
+            id: temperatureUnitFahrenheitButton
+            QQC2.ButtonGroup.group: temperatureUnitGroup
+
+            text: "°F"
+            onCheckedChanged: if (checked) { cfg_temperatureUnit = 1; }
         }
 
-        onValueChanged: cfg_updateInterval = fromInt(value)
+        QQC2.RadioButton {
+            id: temperatureUnitKelvinButton
+            QQC2.ButtonGroup.group: temperatureUnitGroup
 
-        function toInt(value) {
-            return value * 10;
+            text: "K"
+            onCheckedChanged: if (checked) { cfg_temperatureUnit = 2; }
         }
-
-        function fromInt(value) {
-            return value / 10;
-        }
-    }
-
-    Item {
-        Kirigami.FormData.isSection: true
-    }
-
-    QQC2.ButtonGroup {
-        id: temperatureUnitGroup
-    }
-
-    QQC2.RadioButton {
-        id: temperatureUnitCelciusButton
-
-        Kirigami.FormData.label: "Temperature unit:"
-        QQC2.ButtonGroup.group: temperatureUnitGroup
-
-        text: "°C"
-        onCheckedChanged: if (checked) { cfg_temperatureUnit = 0; }
-    }
-
-    QQC2.RadioButton {
-        id: temperatureUnitFahrenheitButton
-        QQC2.ButtonGroup.group: temperatureUnitGroup
-
-        text: "°F"
-        onCheckedChanged: if (checked) { cfg_temperatureUnit = 1; }
-    }
-
-    QQC2.RadioButton {
-        id: temperatureUnitKelvinButton
-        QQC2.ButtonGroup.group: temperatureUnitGroup
-
-        text: "K"
-        onCheckedChanged: if (checked) { cfg_temperatureUnit = 2; }
     }
 }
