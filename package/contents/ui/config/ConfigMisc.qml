@@ -18,6 +18,16 @@ KCM.SimpleKCM {
     // HACK: Present to suppress errors
     property string cfg_sensors
     property string cfg_sensorsDefault
+    property bool cfg_showUnit
+    property bool cfg_showUnitDefault
+    property bool cfg_enableDangerColor
+    property bool cfg_enableDangerColorDefault
+    property int cfg_warningThreshold
+    property int cfg_warningThresholdDefault
+    property int cfg_meltdownThreshold
+    property int cfg_meltdownThresholdDefault
+    property bool cfg_swapLabels
+    property bool cfg_swapLabelsDefault
     property double cfg_updateIntervalDefault
     property int cfg_temperatureUnitDefault
 
