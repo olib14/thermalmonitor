@@ -31,6 +31,9 @@ KCM.ScrollViewKCM {
     property int cfg_temperatureUnit
     property int cfg_temperatureUnitDefault
 
+    // HACK: Provides footer separator
+    extraFooterTopPadding: true
+
     header: ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
 
@@ -97,9 +100,13 @@ KCM.ScrollViewKCM {
                 enabled: root.libAvailable
 
                 RowLayout {
+                    height: parent.height
+
                     spacing: Kirigami.Units.largeSpacing
 
                     Kirigami.ListItemDragHandle {
+                        Layout.leftMargin: Kirigami.Units.largeSpacing
+
                         listItem: sensorDelegate
                         listView: sensorsView
                         onMoveRequested: (oldIndex, newIndex) => {
@@ -150,11 +157,14 @@ KCM.ScrollViewKCM {
     }
 
     footer: RowLayout {
-
         enabled: root.libAvailable
+        spacing: Kirigami.Units.smallSpacing
 
         QQC2.Button {
             id: addSensorButton
+
+            // HACK: Footer comes with margin
+            Layout.leftMargin: Kirigami.Units.largeSpacing - 6
 
             text: "Add Sensor…"
             icon.name: "list-add-symbolic"
@@ -173,6 +183,9 @@ KCM.ScrollViewKCM {
         }
 
         QQC2.Button {
+            // HACK: Footer comes with margin
+            Layout.rightMargin: Kirigami.Units.largeSpacing - 6
+
             text: "Export"
             icon.name: "document-export-symbolic"
             enabled: root.clipboardAvailable
@@ -232,6 +245,8 @@ KCM.ScrollViewKCM {
         title: "Add Sensor"
 
         ListView {
+            id: addSensorsView
+
             property alias availableSensors: availableSensorsLoader.item
 
             Loader {
@@ -248,6 +263,7 @@ KCM.ScrollViewKCM {
                 property: "section"
                 delegate: Kirigami.ListSectionHeader {
                     required property string section
+                    width: addSensorsView.width
                     text: section
                 }
             }
@@ -265,10 +281,12 @@ KCM.ScrollViewKCM {
                 }
 
                 RowLayout {
+                    height: parent.height
+
                     spacing: Kirigami.Units.smallSpacing
 
                     QQC2.Label {
-                        Layout.maximumWidth: parent.width
+                        Layout.leftMargin: Kirigami.Units.largeSpacing
 
                         text: model.name
                         elide: Text.ElideRight
