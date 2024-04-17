@@ -111,7 +111,7 @@ ColumnLayout {
 
     function temperatureColor() {
         if (enableDangerColor && delegate.sensor && delegate.sensor.value !== undefined) {
-            let temperature = delegate.sensor.value;
+            let temperature = delegate.sensor.value.toFixed(0);
             if (temperature >= delegate.meltdownThreshold) {
                 return PlasmaCore.Theme.negativeTextColor;
             } else if (temperature >= delegate.warningThreshold) {
