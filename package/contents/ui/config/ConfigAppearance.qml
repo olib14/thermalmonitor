@@ -35,7 +35,12 @@ KCM.SimpleKCM {
     onCfg_enableDangerColorChanged: { enableDangerColorBox.checked = cfg_enableDangerColor; }
     onCfg_warningThresholdChanged: { warningThresholdSpinBox.value = cfg_warningThreshold; }
     onCfg_meltdownThresholdChanged: { meltdownThresholdSpinBox.value = cfg_meltdownThreshold; }
-    onCfg_swapLabelsChanged: { swapLabelsBox.checked = cfg_swapLabels; }
+    onCfg_swapLabelsChanged: {
+        primaryLabelTemperatureButton.checked = !cfg_swapLabels;
+        primaryLabelNameButton.checked = cfg_swapLabels;
+    }
+
+    Component.onCompleted: cfg_swapLabelsChanged()
 
     Kirigami.FormLayout {
 
@@ -132,22 +137,21 @@ KCM.SimpleKCM {
 
         Item { Kirigami.FormData.isSection: true }
 
-        QQC2.CheckBox {
-            id: swapLabelsBox
-            Kirigami.FormData.label: "Labels:"
+        QQC2.ButtonGroup { id: primaryLabelGroup }
 
-            text: "Swap"
-            onCheckedChanged: { cfg_swapLabels = checked; }
+        QQC2.RadioButton {
+            id: primaryLabelTemperatureButton
+            Kirigami.FormData.label: "Primary label:"
+
+            text: "Temperature"
+            onCheckedChanged: if (checked) cfg_swapLabels = false
         }
 
-        QQC2.Label {
-            Layout.fillWidth: true
+        QQC2.RadioButton {
+            id: primaryLabelNameButton
 
-            leftPadding: swapLabelsBox.indicator.width
-            text: "Show the sensor name on the top"
-            textFormat: Text.PlainText
-            elide: Text.ElideRight
-            font: Kirigami.Theme.smallFont
+            text: "Name"
+            onCheckedChanged: if (checked) cfg_swapLabels = true
         }
     }
 }
