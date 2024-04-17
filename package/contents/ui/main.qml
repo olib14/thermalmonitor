@@ -17,6 +17,8 @@ PlasmoidItem {
     readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors)
     readonly property bool hasSensors: sensors.length
 
+    readonly property double fontScale: Plasmoid.configuration.fontScale
+
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
 
     preferredRepresentation: hasSensors ? fullRepresentation : compactRepresentation
@@ -45,8 +47,8 @@ PlasmoidItem {
 
         flow:   isVertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
 
-        columnSpacing: Kirigami.Units.smallSpacing
-        rowSpacing:    Kirigami.Units.smallSpacing
+        columnSpacing: Kirigami.Units.smallSpacing * fontScale
+        rowSpacing:    Kirigami.Units.smallSpacing * fontScale
 
         Repeater {
             model: root.sensors

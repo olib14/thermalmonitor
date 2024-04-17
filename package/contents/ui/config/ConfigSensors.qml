@@ -36,6 +36,8 @@ KCM.ScrollViewKCM {
     property int cfg_meltdownThresholdDefault
     property bool cfg_swapLabels
     property bool cfg_swapLabelsDefault
+    property double cfg_fontScale
+    property double cfg_fontScaleDefault
     property double cfg_updateInterval
     property double cfg_updateIntervalDefault
     property int cfg_temperatureUnit

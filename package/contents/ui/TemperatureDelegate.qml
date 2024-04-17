@@ -25,6 +25,20 @@ ColumnLayout {
     readonly property int warningThreshold: Plasmoid.configuration.warningThreshold
     readonly property int meltdownThreshold: Plasmoid.configuration.meltdownThreshold
     readonly property bool swapLabels: Plasmoid.configuration.swapLabels
+    readonly property double fontScale: Plasmoid.configuration.fontScale
+
+    Connections {
+        target: Kirigami.Theme
+        onDefaultFontChanged: fontScaleChanged()
+        onSmallFontChanged: fontScaleChanged()
+    }
+
+    onFontScaleChanged: {
+        tempLabel.font = Kirigami.Theme.defaultFont
+        tempLabel.font.pointSize = Kirigami.Theme.defaultFont.pointSize * fontScale
+        nameLabel.font = Kirigami.Theme.smallFont
+        nameLabel.font.pointSize = Kirigami.Theme.smallFont.pointSize * fontScale
+    }
 
     property alias sensor: sensorLoader.item
 
@@ -32,8 +46,8 @@ ColumnLayout {
         if (sensor) { sensor.updateRateLimit = updateRateLimit * 1000; }
     }
 
-    Layout.leftMargin:  Kirigami.Units.smallSpacing
-    Layout.rightMargin: Kirigami.Units.smallSpacing
+    Layout.leftMargin:  Kirigami.Units.smallSpacing * fontScale
+    Layout.rightMargin: Kirigami.Units.smallSpacing * fontScale
     Layout.alignment:   Qt.AlignHCenter | Qt.AlignVCenter
 
     spacing: 0

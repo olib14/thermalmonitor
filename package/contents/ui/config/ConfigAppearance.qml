@@ -17,6 +17,7 @@ KCM.SimpleKCM {
     property int cfg_warningThreshold
     property int cfg_meltdownThreshold
     property bool cfg_swapLabels
+    property double cfg_fontScale
 
     // HACK: Present to suppress errors
     property string cfg_sensors
@@ -26,6 +27,7 @@ KCM.SimpleKCM {
     property int cfg_warningThresholdDefault
     property int cfg_meltdownThresholdDefault
     property bool cfg_swapLabelsDefault
+    property double cfg_fontScaleDefault
     property double cfg_updateInterval
     property double cfg_updateIntervalDefault
     property int cfg_temperatureUnit
@@ -39,6 +41,7 @@ KCM.SimpleKCM {
         primaryLabelTemperatureButton.checked = !cfg_swapLabels;
         primaryLabelNameButton.checked = cfg_swapLabels;
     }
+    onCfg_fontScaleChanged: { fontScaleSpinBox.value = fontScaleSpinBox.toInt(cfg_fontScale) }
 
     Component.onCompleted: cfg_swapLabelsChanged()
 
@@ -70,7 +73,6 @@ KCM.SimpleKCM {
         }
 
         RowLayout {
-
             QQC2.Label {
                 Layout.leftMargin: enableDangerColorBox.indicator.width
                 text: "Warning threshold:"
@@ -103,7 +105,6 @@ KCM.SimpleKCM {
         }
 
         RowLayout {
-
             QQC2.Label {
                 Layout.leftMargin: enableDangerColorBox.indicator.width
                 text: "Meltdown threshold:"
@@ -152,6 +153,42 @@ KCM.SimpleKCM {
 
             text: "Name"
             onCheckedChanged: if (checked) cfg_swapLabels = true
+        }
+
+        Item { Kirigami.FormData.isSection: true }
+
+        QQC2.SpinBox {
+            id: fontScaleSpinBox
+            Kirigami.FormData.label: "Font scale:"
+
+            stepSize: toInt(0.1)
+            from: toInt(1)
+            to: toInt(12)
+
+            validator: DoubleValidator {
+                bottom: fontScaleSpinBox.from
+                top: fontScaleSpinBox.to
+                decimals: 1
+                notation: DoubleValidator.StandardNotation
+            }
+
+            textFromValue: (value, locale) => {
+                return Number(fromInt(value)).toLocaleString(locale, 'f', 1);
+            }
+
+            valueFromText: (text, locale) => {
+                return Math.round(toInt(Number.fromLocaleString(locale, text)));
+            }
+
+            onValueChanged: { cfg_fontScale = fromInt(value); }
+
+            function toInt(value) {
+                return value * 10;
+            }
+
+            function fromInt(value) {
+                return value / 10;
+            }
         }
     }
 }
