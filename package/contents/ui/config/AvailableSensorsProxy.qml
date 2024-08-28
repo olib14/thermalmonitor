@@ -16,61 +16,70 @@ import org.kde.kirigami as Kirigami
 // e.g. loader.status !== Loader.Ready
 
 Item {
-    property var treeModel: Sensors.SensorTreeModel {}
-    property var flatModel: KItemModels.KDescendantsProxyModel {
-        model: treeModel
-    }
-    property var sensorsModel: KItemModels.KSortFilterProxyModel {
-        sourceModel: flatModel
-        filterRowCallback: (row, parent) => {
-            let sensorId = sourceModel.data(sourceModel.index(row, 0), Sensors.SensorTreeModel.SensorId);
-            let display = sourceModel.data(sourceModel.index(row, 0), Qt.DisplayRole);
+    id: availableSensors
 
-            // Filter, remove non-sensors, only temperature, and remove groups
-            // TODO: Remove non-temperature sensors and groups more sensibly
+    readonly property var sensorRole: Sensors.SensorTreeModel.SensorId
+    property alias model: model
+
+    Sensors.SensorTreeModel {
+        id: sensorTreeModel
+    }
+
+    KItemModels.KDescendantsProxyModel {
+        id: descendantsModel
+
+        model: sensorTreeModel
+    }
+
+    KItemModels.KSortFilterProxyModel {
+        id: filterModel
+
+        sourceModel: descendantsModel
+        filterRowCallback: (row, parent) => {
+            let display = sourceModel.data(sourceModel.index(row, 0), Qt.DisplayRole);
+            let sensorId = sourceModel.data(sourceModel.index(row, 0), sensorRole);
+
+            // Filter: remove non-sensors, only temperature and remove groups
             return sensorId.length > 0 && display.includes("(°C)") && !display.includes("[");
         }
 
-        onRowsInserted: (parent, first, last) => {
-            //console.log("rowsInserted", first, last);
-            for (var i = first; i <= last; ++i) {
-                // Ignore when outside range
-                // Rows are initially inserted strangely, so this suppresses errors
-                // and everything comes out working anyway
-                if (i > availableSensorsModel.count)
-                    return;
+        onRowsInserted: model.update()
+        onRowsRemoved: model.update()
+        onRowsMoved: model.update()
+    }
 
-                let index = sensorsModel.index(i, 0);
-                let name = sensorsModel.data(index, Qt.DisplayRole).replace(" (°C)", "");
-                let sensorId = sensorsModel.data(index, Sensors.SensorTreeModel.SensorId);
+    ListModel {
+        id: model
 
-                let categoryIndex = flatModel.mapToSource(sensorsModel.mapToSource(index));
-                let subcategoryIndex = null
+        function update() {
+            clear();
+            for (let i = 0; i < filterModel.rowCount(); ++i) {
+                let index = filterModel.index(i, 0);
+
+                // Get name without unit, and sensorId
+                let name = filterModel.data(index, Qt.DisplayRole).replace(" (°C)", "");
+                let sensorId = filterModel.data(index, sensorRole);
+
+                // Get category and subcategory indexes
+                let categoryIndex = descendantsModel.mapToSource(filterModel.mapToSource(index));
+                let subcategoryIndex = null;
                 while (categoryIndex.parent.valid) {
-                    subcategoryIndex = categoryIndex
+                    subcategoryIndex = categoryIndex;
                     categoryIndex = categoryIndex.parent;
                 }
 
-                let section = treeModel.data(categoryIndex, Qt.DisplayRole);
+                // Get category and subcategory names
+                let categoryName = sensorTreeModel.data(categoryIndex, Qt.DisplayRole);
+                let subcategoryName = sensorTreeModel.data(subcategoryIndex, Qt.DisplayRole);
 
                 // For Hardware Sensors, prepend the subcategory name
                 if (sensorId.includes("lmsensors")) {
-                    let subcategoryName = treeModel.data(subcategoryIndex, Qt.DisplayRole);
                     name = subcategoryName + ": " + name;
                 }
 
-                //console.log("adding sensor:", name, "(" + section + ", " + sensorId + ")");
-                availableSensorsModel.set(i, { "name": name, "sensorId": sensorId, "section": section });
-            }
-        }
-
-        onRowsRemoved: (parent, first, last) => {
-            //console.log("rowsRemoved", first, last);
-            for (var i = last; i >= first; --i) {
-                //console.log("removing sensor", i);
-                availableSensorsModel.remove(i);
+                //console.log("adding sensor:", name, "(" + categoryName + ", " + sensorId + ")");
+                model.set(i, { "name": name, "sensorId": sensorId, "section": categoryName });
             }
         }
     }
-    property var availableSensorsModel: ListModel {}
 }

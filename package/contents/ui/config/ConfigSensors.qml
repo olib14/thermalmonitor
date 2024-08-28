@@ -264,12 +264,12 @@ KCM.ScrollViewKCM {
             Loader {
                 id: availableSensorsLoader
 
-                Component.onCompleted: setSource("AvailableSensorsProxy.qml")
+                source: "AvailableSensorsProxy.qml"
             }
 
             reuseItems: true
 
-            model: availableSensors?.availableSensorsModel
+            model: availableSensors?.model
 
             section {
                 property: "section"
