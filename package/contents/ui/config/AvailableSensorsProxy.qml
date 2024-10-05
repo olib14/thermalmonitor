@@ -43,11 +43,10 @@ Item {
             return sensorId.length > 0 && display.includes("(°C)") && !display.includes("[");
         }
 
-        onRowsInserted: model.update()
-        onRowsRemoved: model.update()
-        onRowsMoved: model.update()
+        onRowCountChanged: model.update();
     }
 
+    // Custom model, so we can give sensors better names and categorise them
     ListModel {
         id: model
 
