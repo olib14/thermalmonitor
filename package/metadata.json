@@ -5,17 +5,17 @@
         "Id": "org.kde.olib.thermalmonitor",
         "Description": "Shows system temperatures",
         "Category": "System Information",
-		"Icon": "temperature-warm",
-		"Authors": [
-			{
-				"Email": "olib141@outlook.com",
-				"Name": "Oliver Beard"
-			}
-		],
+        "Icon": "temperature-warm",
+        "Authors": [
+            {
+                "Email": "olib141@outlook.com",
+                "Name": "Oliver Beard"
+            }
+        ],
         "Version": "0.1.7",
-		"License": "MIT",
-		"Website": "https://invent.kde.org/olib/thermalmonitor",
-		"BugReportUrl": "https://invent.kde.org/olib/thermalmonitor/-/issues"
+        "License": "MIT",
+        "Website": "https://invent.kde.org/olib/thermalmonitor",
+        "BugReportUrl": "https://invent.kde.org/olib/thermalmonitor/-/issues"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-API": "declarativeappletscript",
