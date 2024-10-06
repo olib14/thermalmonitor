@@ -2,7 +2,14 @@
 
 A KDE Plasmoid for displaying system temperatures.
 
-![screenshot](preview-all-white.png)
+![Screenshot of the plasmoid on the desktop](screenshots/preview-all-white.png)
+
+<details><summary>Settings screenshots</summary>
+
+| Sensors | Appearance | Misc |
+| ------- | ---------- | ---- |
+| ![Screenshot of the plasmoid's settings, sensors page](screenshots/preview-settings-1-sensors.png) | ![Screenshot of the plasmoid's settings, appearance page](screenshots/preview-settings-2-appearance.png) | ![Screenshot of the plasmoid's settings, misc page](screenshots/preview-settings-3-misc.png) |
+</details>
 
 Inspired by:
 
