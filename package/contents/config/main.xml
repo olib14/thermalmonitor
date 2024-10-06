@@ -26,7 +26,7 @@
             <default>70</default>
         </entry>
         <entry name="meltdownThreshold" type="Int">
-            <default>=90</default>
+            <default>90</default>
         </entry>
         <entry name="swapLabels" type="Bool">
             <default>false</default>
