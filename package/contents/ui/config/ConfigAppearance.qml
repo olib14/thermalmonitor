@@ -162,8 +162,8 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: "Font scale:"
 
             stepSize: toInt(0.1)
-            from: toInt(1)
-            to: toInt(12)
+            from: toInt(0.5)
+            to: toInt(5)
 
             validator: DoubleValidator {
                 bottom: fontScaleSpinBox.from
