@@ -46,7 +46,15 @@ KCM.ScrollViewKCM {
     // HACK: Provides footer separator
     extraFooterTopPadding: true
 
+    // HACK: Provides header separator
+    Component.onCompleted: findHeaderSeparator().visible = true
+
+    function findHeaderSeparator() {
+        return root.header?.children[1] ?? null;
+    }
+
     header: ColumnLayout {
+        id: headerLayout
         spacing: Kirigami.Units.smallSpacing
 
         Kirigami.InlineMessage {

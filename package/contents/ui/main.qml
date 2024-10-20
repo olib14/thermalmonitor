@@ -1,64 +1,74 @@
 /*
-    SPDX-FileCopyrightText: 2023 Oliver Beard <olib141@outlook.com>
+    SPDX-FileCopyrightText: 2024 Oliver Beard <olib141@outlook.com>
     SPDX-License-Identifier: MIT
 */
 
 import QtQuick
-import QtQuick.Layouts
 
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.components as PlasmaComponents
-import org.kde.kirigami as Kirigami
+
+import "../code/formatter.js" as Formatter
 
 PlasmoidItem {
     id: root
 
-    readonly property var sensors: JSON.parse(Plasmoid.configuration.sensors)
-    readonly property bool hasSensors: sensors.length
+    // TODO: Add pinned property defaults to false
+    // override with binding when a config setting to remember pinned is checked
+    // and set to the property and have that update it and whatever
 
-    readonly property double fontScale: Plasmoid.configuration.fontScale
+    // Could go in a Behaviour settings page
+
+    property list<QtObject> sensors: sensorsLoader.item?.sensors ?? []
+    readonly property bool needsConfiguration: sensors.length === 0
+
+    property int activeSensor: -1
+    property int hoveredSensor: -1
+
+    onSensorsChanged: {
+        expanded = false;
+    }
+
+    onExpandedChanged: (expanded) => {
+        if (!expanded) {
+            activeSensor = -1;
+        }
+    }
+
+    Loader {
+        id: sensorsLoader
+
+        source: "SensorProxy.qml"
+    }
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
 
-    preferredRepresentation: hasSensors ? fullRepresentation : compactRepresentation
-    fullRepresentation: GridLayout {
+    preferredRepresentation: compactRepresentation
+    compactRepresentation: CompactRepresentation {}
+    fullRepresentation: FullRepresentation {}
 
-        readonly property bool isVertical: {
-            switch (Plasmoid.formFactor) {
-                case PlasmaCore.Types.Planar:
-                case PlasmaCore.Types.MediaCenter:
-                case PlasmaCore.Types.Application:
-                default:
-                    if (root.height > root.width) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                case PlasmaCore.Types.Vertical:
-                    return true;
-                case PlasmaCore.Types.Horizontal:
-                    return false;
-            }
+    hideOnWindowDeactivate: !Plasmoid.configuration.pinned
+    toolTipMainText: {
+        if (needsConfiguration || hoveredSensor === -1) {
+            return Plasmoid.title;
         }
 
-        width:  isVertical ? root.width : implicitWidth
-        height: isVertical ? implicitHeight : root.height
-
-        flow:   isVertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
-
-        columnSpacing: Kirigami.Units.smallSpacing * fontScale
-        rowSpacing:    Kirigami.Units.smallSpacing * fontScale
-
-        Repeater {
-            model: root.sensors
-            delegate: TemperatureDelegate { name: modelData.name; sensorId: modelData.sensorId }
+        return "%1 — %2".arg(sensors[hoveredSensor].name).arg(Plasmoid.title);
+    }
+    toolTipSubText: {
+        if (needsConfiguration) {
+            return "Click to configure";
         }
 
-        PlasmaComponents.Button {
-            visible: !root.hasSensors
-            text: "Configure…"
-            onClicked: Plasmoid.internalAction("configure").trigger()
+        if (hoveredSensor === -1) {
+            return "";
         }
+
+        let unit = sensors[hoveredSensor].unit;
+        let showUnit = Plasmoid.configuration.showUnit;
+        return "Average\t%1\nMinimum\t%2\nMaximum\t%3" // NOTE: \t likely poor with translation
+            .arg(Formatter.formatTemperature(sensors[hoveredSensor].avg, unit, showUnit))
+            .arg(Formatter.formatTemperature(sensors[hoveredSensor].min, unit, showUnit))
+            .arg(Formatter.formatTemperature(sensors[hoveredSensor].max, unit, showUnit));
     }
 }

@@ -10,6 +10,8 @@ import QtQuick.Controls as QQC2
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
+import "../../code/formatter.js" as Formatter
+
 KCM.SimpleKCM {
 
     property bool cfg_showUnit
@@ -18,6 +20,10 @@ KCM.SimpleKCM {
     property int cfg_meltdownThreshold
     property bool cfg_swapLabels
     property double cfg_fontScale
+    property bool cfg_showStats
+    property bool cfg_chartAutomaticScale
+    property int cfg_chartFromY
+    property int cfg_chartToY
 
     // HACK: Present to suppress errors
     property string cfg_sensors
@@ -42,10 +48,19 @@ KCM.SimpleKCM {
         primaryLabelNameButton.checked = cfg_swapLabels;
     }
     onCfg_fontScaleChanged: { fontScaleSpinBox.value = fontScaleSpinBox.toInt(cfg_fontScale) }
+    onCfg_showStatsChanged: { showStatsBox.checked = cfg_showStats; }
+    onCfg_chartAutomaticScaleChanged: { chartAutomaticScaleBox.checked = cfg_chartAutomaticScale; }
+    onCfg_chartFromYChanged: { chartFromYSpinBox.value = cfg_chartFromY; }
+    onCfg_chartToYChanged: { chartToYSpinBox.value = cfg_chartToY; }
 
     Component.onCompleted: cfg_swapLabelsChanged()
 
     Kirigami.FormLayout {
+
+        Item {
+            Kirigami.FormData.label: "General"
+            Kirigami.FormData.isSection: true
+        }
 
         QQC2.CheckBox {
             id: showUnitBox
@@ -53,6 +68,10 @@ KCM.SimpleKCM {
 
             text: "Show unit"
             onCheckedChanged: { cfg_showUnit = checked; }
+        }
+
+        Item {
+            Kirigami.FormData.isSection: true
         }
 
         QQC2.CheckBox {
@@ -73,8 +92,12 @@ KCM.SimpleKCM {
         }
 
         RowLayout {
+
             QQC2.Label {
+                id: warningThresholdLabel
                 Layout.leftMargin: enableDangerColorBox.indicator.width
+                Layout.preferredWidth: Math.max(warningThresholdLabel.implicitWidth,
+                                                meltdownThresholdLabel.implicitWidth)
                 text: "Warning threshold:"
             }
 
@@ -83,30 +106,33 @@ KCM.SimpleKCM {
 
                 enabled: cfg_enableDangerColor
 
-                stepSize: 1
+                stepSize: 10
                 from: 0
-                to: 150
+                to: 400
 
                 validator: IntValidator {
                     bottom: warningThresholdSpinBox.from
                     top: warningThresholdSpinBox.to
                 }
 
-                textFromValue: (value, locale) => {
-                    return Number(value).toLocaleString(locale, 'f', 0) + " °C";
-                }
+                textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
+                valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
 
-                valueFromText: (text, locale) => {
-                    return Number.fromLocaleString(locale, text.split(" ")[0]);
-                }
+                onValueChanged: cfg_warningThreshold = value
+            }
 
-                onValueChanged: { cfg_warningThreshold = value; }
+            QQC2.Label {
+                text: Formatter.unitString(cfg_temperatureUnit, false)
             }
         }
 
         RowLayout {
+
             QQC2.Label {
+                id: meltdownThresholdLabel
                 Layout.leftMargin: enableDangerColorBox.indicator.width
+                Layout.preferredWidth: Math.max(warningThresholdLabel.implicitWidth,
+                                                meltdownThresholdLabel.implicitWidth)
                 text: "Meltdown threshold:"
             }
 
@@ -115,28 +141,30 @@ KCM.SimpleKCM {
 
                 enabled: cfg_enableDangerColor
 
-                stepSize: 1
+                stepSize: 10
                 from: 0
-                to: 150
+                to: 400
 
                 validator: IntValidator {
                     bottom: meltdownThresholdSpinBox.from
                     top: meltdownThresholdSpinBox.to
                 }
 
-                textFromValue: (value, locale) => {
-                    return Number(value).toLocaleString(locale, 'f', 0) + " °C";
-                }
+                textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
+                valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
 
-                valueFromText: (text, locale) => {
-                    return Number.fromLocaleString(locale, text.split(" ")[0]);
-                }
+                onValueChanged: cfg_meltdownThreshold = value
+            }
 
-                onValueChanged: { cfg_meltdownThreshold = value; }
+            QQC2.Label {
+                text: Formatter.unitString(cfg_temperatureUnit, false)
             }
         }
 
-        Item { Kirigami.FormData.isSection: true }
+        Item {
+            Kirigami.FormData.label: "Applet"
+            Kirigami.FormData.isSection: true
+        }
 
         QQC2.ButtonGroup { id: primaryLabelGroup }
 
@@ -155,7 +183,9 @@ KCM.SimpleKCM {
             onCheckedChanged: if (checked) cfg_swapLabels = true
         }
 
-        Item { Kirigami.FormData.isSection: true }
+        Item {
+            Kirigami.FormData.isSection: true
+        }
 
         QQC2.SpinBox {
             id: fontScaleSpinBox
@@ -188,6 +218,105 @@ KCM.SimpleKCM {
 
             function fromInt(value) {
                 return value / 10;
+            }
+        }
+
+        Item {
+            Kirigami.FormData.label: "Popup"
+            Kirigami.FormData.isSection: true
+        }
+
+        QQC2.CheckBox {
+            id: showStatsBox
+            Kirigami.FormData.label: "Statistics:"
+
+            text: "Show average, min and max temperatures"
+            onCheckedChanged: { cfg_showStats = checked; }
+        }
+
+        Item {
+            Kirigami.FormData.isSection: true
+        }
+
+        QQC2.CheckBox {
+            id: chartAutomaticScaleBox
+            Kirigami.FormData.label: "Chart:"
+
+            text: "Automatic scale"
+            onCheckedChanged: { cfg_chartAutomaticScale = checked; }
+        }
+
+        RowLayout {
+
+            QQC2.Label {
+                id: chartFromYLabel
+                Layout.leftMargin: chartAutomaticScaleBox.indicator.width
+                Layout.preferredWidth: Math.max(chartFromYLabel.implicitWidth,
+                                                chartToYLabel.implicitWidth)
+                text: "From:"
+            }
+
+            QQC2.SpinBox {
+                id: chartFromYSpinBox
+                Layout.preferredWidth: Math.max(chartFromYSpinBox.implicitWidth,
+                                                chartToYSpinBox.implicitWidth)
+
+                enabled: !cfg_chartAutomaticScale
+
+                stepSize: 10
+                from: 0
+                to: chartToYSpinBox.value - 10
+
+                validator: IntValidator {
+                    bottom: chartFromYSpinBox.from
+                    top: chartFromYSpinBox.to
+                }
+
+                textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
+                valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
+
+                onValueChanged: cfg_chartFromY = value
+            }
+
+            QQC2.Label {
+                text: Formatter.unitString(cfg_temperatureUnit, false)
+            }
+        }
+
+        RowLayout {
+
+            QQC2.Label {
+                id: chartToYLabel
+                Layout.leftMargin: chartAutomaticScaleBox.indicator.width
+                Layout.preferredWidth: Math.max(chartFromYLabel.implicitWidth,
+                                                chartToYLabel.implicitWidth)
+                text: "To:"
+            }
+
+            QQC2.SpinBox {
+                id: chartToYSpinBox
+                Layout.preferredWidth: Math.max(chartFromYSpinBox.implicitWidth,
+                                                chartToYSpinBox.implicitWidth)
+
+                enabled: !cfg_chartAutomaticScale
+
+                stepSize: 10
+                from: chartFromYSpinBox.value + 10
+                to: 400
+
+                validator: IntValidator {
+                    bottom: chartToYSpinBox.from
+                    top: chartToYSpinBox.to
+                }
+
+                textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
+                valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
+
+                onValueChanged: cfg_chartToY = value
+            }
+
+            QQC2.Label {
+                text: Formatter.unitString(cfg_temperatureUnit, false)
             }
         }
     }
