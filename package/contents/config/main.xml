@@ -9,9 +9,15 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
     <kcfgfile name=""/>
 
+    <group name="State">
+        <entry name="pinned" type="Bool">
+            <default>false</default>
+        </entry>
+    </group>
+
     <group name="General">
         <entry name="sensors" type="String">
-            <default></default>
+            <default>[]</default>
         </entry>
     </group>
 
@@ -33,6 +39,21 @@
         </entry>
         <entry name="fontScale" type="Double">
             <default>1.0</default>
+        </entry>
+        <entry name="showStats" type="Bool">
+            <default>true</default>
+        </entry>
+        <entry name="chartHistory" type="Int">
+            <default>60</default>
+        </entry>
+        <entry name="chartAutomaticScale" type="Bool">
+            <default>true</default>
+        </entry>
+        <entry name="chartFromY" type="Int">
+            <default>20</default>
+        </entry>
+        <entry name="chartToY" type="Int">
+            <default>100</default>
         </entry>
     </group>
 

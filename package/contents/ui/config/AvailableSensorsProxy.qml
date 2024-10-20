@@ -70,6 +70,7 @@ Item {
                 // Get category and subcategory names
                 let categoryName = sensorTreeModel.data(categoryIndex, Qt.DisplayRole);
                 let subcategoryName = sensorTreeModel.data(subcategoryIndex, Qt.DisplayRole);
+                // TODO: AvailableSensorsProxy.qml:72: TypeError: Passing incompatible arguments to C++ functions from JavaScript is not allowed.
 
                 // For Hardware Sensors, prepend the subcategory name
                 if (sensorId.includes("lmsensors")) {
