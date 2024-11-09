@@ -10,7 +10,7 @@ ConfigModel {
 
     ConfigCategory {
          name: i18n("Sensors")
-         icon: "temperature-normal"
+         icon: "temperature-warm"
          source: "config/ConfigSensors.qml"
     }
 
