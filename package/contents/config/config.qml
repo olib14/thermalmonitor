@@ -15,14 +15,14 @@ ConfigModel {
     }
 
     ConfigCategory {
-         name: i18n("Appearance")
-         icon: "preferences-desktop-color"
-         source: "config/ConfigAppearance.qml"
+         name: i18n("Behavior")
+         icon: "preferences-other"
+         source: "config/ConfigBehavior.qml"
     }
 
     ConfigCategory {
-         name: i18n("Misc")
-         icon: "preferences-system-other"
-         source: "config/ConfigMisc.qml"
+         name: i18n("Appearance")
+         icon: "preferences-desktop-color"
+         source: "config/ConfigAppearance.qml"
     }
 }

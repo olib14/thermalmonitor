@@ -24,6 +24,20 @@
         </entry>
     </group>
 
+    <group name="Behavior">
+        <entry name="updateInterval" type="Double">
+            <default>1.0</default>
+        </entry>
+        <entry name="temperatureUnit" type="Enum">
+            <choices>
+                <choice name="celsius"/>
+                <choice name="fahrenheit"/>
+                <choice name="kelvin"/>
+            </choices>
+            <default>0</default>
+        </entry>
+    </group>
+
     <group name="Appearance">
         <entry name="showUnit" type="Bool">
             <default>true</default>
@@ -57,20 +71,6 @@
         </entry>
         <entry name="chartToY" type="Int">
             <default>100</default>
-        </entry>
-    </group>
-
-    <group name="Misc">
-        <entry name="updateInterval" type="Double">
-            <default>1.0</default>
-        </entry>
-        <entry name="temperatureUnit" type="Enum">
-            <choices>
-                <choice name="celsius"/>
-                <choice name="fahrenheit"/>
-                <choice name="kelvin"/>
-            </choices>
-            <default>0</default>
         </entry>
     </group>
 </kcfg>
