@@ -71,4 +71,17 @@ PlasmoidItem {
             .arg(Formatter.formatTemperature(sensors[hoveredSensor].min, unit, showUnit))
             .arg(Formatter.formatTemperature(sensors[hoveredSensor].max, unit, showUnit));
     }
+
+    Component.onCompleted: {
+        let previousVersion = Plasmoid.configuration.lastSeenVersion;
+        let currentVersion = Plasmoid.metadata.version;
+
+        if (previousVersion != "") {
+            // TODO: Upgrade!
+            // Could work with array of versions and functions to upgrade,
+            // run each matching function in order, do in ../code/upgrade.js
+        }
+
+        Plasmoid.configuration.lastSeenVersion = currentVersion;
+    }
 }
