@@ -22,9 +22,21 @@ KCM.SimpleKCM {
     property bool cfg_scrollPopup
     property bool cfg_scrollWraparound
 
-    // HACK: Present to suppress errors
+    // HACK: Suppresses errors
+    // https://invent.kde.org/plasma/plasma-desktop/-/merge_requests/2619
+    property bool cfg_pinned
+    property bool cfg_pinnedDefault
+    property string cfg_lastSeenVersion
+    property string cfg_lastSeenVersionDefault
     property string cfg_sensors
     property string cfg_sensorsDefault
+    property double cfg_updateIntervalDefault
+    property int cfg_temperatureUnitDefault
+    property int cfg_statsHistoryDefault
+    property bool cfg_scrollAppletDefault
+    property bool cfg_scrollAppletOpensPopupDefault
+    property bool cfg_scrollPopupDefault
+    property bool cfg_scrollWraparoundDefault
     property bool cfg_showUnit
     property bool cfg_showUnitDefault
     property bool cfg_enableDangerColor
@@ -37,8 +49,14 @@ KCM.SimpleKCM {
     property bool cfg_swapLabelsDefault
     property double cfg_fontScale
     property double cfg_fontScaleDefault
-    property double cfg_updateIntervalDefault
-    property int cfg_temperatureUnitDefault
+    property bool cfg_showStats
+    property bool cfg_showStatsDefault
+    property bool cfg_chartAutomaticScale
+    property bool cfg_chartAutomaticScaleDefault
+    property int cfg_chartFromY
+    property int cfg_chartFromYDefault
+    property int cfg_chartToY
+    property int cfg_chartToYDefault
 
     onCfg_temperatureUnitChanged: {
         temperatureUnitChangedMessage.visible = true;
