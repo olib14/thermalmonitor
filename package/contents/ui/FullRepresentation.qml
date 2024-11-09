@@ -155,6 +155,14 @@ PlasmaExtras.Representation {
         separatorVisible: false
         defaultColumnWidth: width
 
+        // Inhibit scroll animation when expanding
+        Binding {
+            target: pageRow.columnView
+            property: "scrollDuration"
+            value: 0
+            when: !root.expanded
+        }
+
         Instantiator {
             model: root.sensors
             delegate: Item {
@@ -178,12 +186,31 @@ PlasmaExtras.Representation {
             onObjectRemoved: (index, object) => pageRow.removePage(object)
         }
 
-        // Inhibit scroll animation when expanding
-        Binding {
-            target: pageRow.columnView
-            property: "scrollDuration"
-            value: 0
-            when: !root.expanded
+        MouseArea {
+            anchors.fill: parent
+
+            onWheel: (wheel) => {
+                if (root.needsConfiguation || root.sensors.length < 2 || !Plasmoid.configuration.scrollPopup) {
+                    return;
+                }
+
+                //let delta = wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x; // TODO: Test inverted with touchpad, left/right too
+                let delta = (wheel.inverted ? -1 : 1) * (wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x);
+
+                // Scroll up/right -> decrease index
+                while (delta >= 120) {
+                    delta -= 120;
+                    root.activeSensor = Plasmoid.configuration.scrollWraparound ? (root.activeSensor - 1 + root.sensors.length) % root.sensors.length
+                                                                                : Math.max(root.activeSensor - 1, 0);
+                }
+
+                // Scroll down/left -> increase index
+                while (delta <= -120) {
+                    delta += 120;
+                    root.activeSensor = Plasmoid.configuration.scrollWraparound ? (root.activeSensor + 1) % root.sensors.length
+                                                                                : Math.min(root.activeSensor + 1, root.sensors.length - 1);
+                }
+            }
         }
 
         // PageRow features a Rectangle indicating position, which is not

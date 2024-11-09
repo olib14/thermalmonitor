@@ -106,7 +106,7 @@ Item {
             Timer {
                 id: history
 
-                property int maximumLength: (Plasmoid.configuration.chartHistory * 1000) / interval
+                property int maximumLength: (Plasmoid.configuration.statsHistory * 1000) / interval
                 property list<var> values: Array(maximumLength).fill(undefined)
                 property list<int> filteredValues: values.filter(value => value !== undefined)
 

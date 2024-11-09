@@ -112,7 +112,7 @@ MouseArea {
     }
 
     function handleWheel(wheel) : void {
-        if (root.needsConfiguation || root.sensors.length < 2) {
+        if (root.needsConfiguation || root.sensors.length < 2 || !Plasmoid.configuration.scrollApplet) {
             return;
         }
 
@@ -128,10 +128,9 @@ MouseArea {
                 root.activeSensor = root.sensors.length - 1;
             } else {
                 // Active sensor
-                root.activeSensor = (root.activeSensor - 1 + root.sensors.length) % root.sensors.length;
+                root.activeSensor = Plasmoid.configuration.scrollWraparound ? (root.activeSensor - 1 + root.sensors.length) % root.sensors.length
+                                                                            : Math.max(root.activeSensor - 1, 0);
             }
-
-            root.expanded = true;
         }
 
         // Scroll down/left -> increase index
@@ -143,9 +142,12 @@ MouseArea {
                 root.activeSensor = 0;
             } else {
                 // Active sensor
-                root.activeSensor = (root.activeSensor + 1) % root.sensors.length;
+                root.activeSensor = Plasmoid.configuration.scrollWraparound ? (root.activeSensor + 1) % root.sensors.length
+                                                                            : Math.min(root.activeSensor + 1, root.sensors.length - 1);
             }
+        }
 
+        if (Plasmoid.configuration.scrollAppletOpensPopup) {
             root.expanded = true;
         }
     }

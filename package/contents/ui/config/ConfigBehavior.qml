@@ -16,7 +16,11 @@ KCM.SimpleKCM {
 
     property double cfg_updateInterval
     property int cfg_temperatureUnit
-    property int cfg_chartHistory
+    property int cfg_statsHistory
+    property bool cfg_scrollApplet
+    property bool cfg_scrollAppletOpensPopup
+    property bool cfg_scrollPopup
+    property bool cfg_scrollWraparound
 
     // HACK: Present to suppress errors
     property string cfg_sensors
@@ -36,30 +40,9 @@ KCM.SimpleKCM {
     property double cfg_updateIntervalDefault
     property int cfg_temperatureUnitDefault
 
-    onCfg_updateIntervalChanged: {
-        updateIntervalSpinBox.value = updateIntervalSpinBox.toInt(cfg_updateInterval);
-    }
-
     onCfg_temperatureUnitChanged: {
-        switch (cfg_temperatureUnit) {
-            default:
-            case Formatter.Units.Celsius:
-                temperatureUnitGroup.checkedButton = temperatureUnitCelciusButton;
-                break;
-            case Formatter.Units.Fahrenheit:
-                temperatureUnitGroup.checkedButton = temperatureUnitFahrenheitButton;
-                break;
-            case Formatter.Units.Kelvin:
-                temperatureUnitGroup.checkedButton = temperatureUnitKelvinButton;
-                break;
-        }
-
-        temperatureUnitChangedMessage.show();
+        temperatureUnitChangedMessage.visible = true;
     }
-
-    onCfg_chartHistoryChanged: { chartHistorySpinBox.value = cfg_chartHistory; }
-
-    Component.onCompleted: cfg_temperatureUnitChanged()
 
     ColumnLayout {
 
@@ -68,7 +51,14 @@ KCM.SimpleKCM {
         Kirigami.FormLayout {
             Layout.fillWidth: true
 
-            QQC2.ButtonGroup { id: temperatureUnitGroup }
+            Item {
+                Kirigami.FormData.label: "Sensor"
+                Kirigami.FormData.isSection: true
+            }
+
+            QQC2.ButtonGroup {
+                id: temperatureUnitGroup
+            }
 
             QQC2.RadioButton {
                 id: temperatureUnitCelciusButton
@@ -77,6 +67,7 @@ KCM.SimpleKCM {
                 QQC2.ButtonGroup.group: temperatureUnitGroup
 
                 text: Formatter.unitString(Formatter.Units.Celsius, false)
+                checked: cfg_temperatureUnit == Formatter.Units.Celsius;
                 onCheckedChanged: if (checked) { cfg_temperatureUnit = Formatter.Units.Celsius; }
             }
 
@@ -85,6 +76,7 @@ KCM.SimpleKCM {
                 QQC2.ButtonGroup.group: temperatureUnitGroup
 
                 text: Formatter.unitString(Formatter.Units.Fahrenheit, false)
+                checked: cfg_temperatureUnit == Formatter.Units.Fahrenheit;
                 onCheckedChanged: if (checked) { cfg_temperatureUnit = Formatter.Units.Fahrenheit; }
             }
 
@@ -93,6 +85,7 @@ KCM.SimpleKCM {
                 QQC2.ButtonGroup.group: temperatureUnitGroup
 
                 text: Formatter.unitString(Formatter.Units.Kelvin, false)
+                checked: cfg_temperatureUnit == Formatter.Units.Kelvin;
                 onCheckedChanged: if (checked) { cfg_temperatureUnit = Formatter.Units.Kelvin; }
             }
 
@@ -118,6 +111,7 @@ KCM.SimpleKCM {
                     textFromValue: (value, locale) => Number(fromInt(value)).toLocaleString(locale, 'f', 1)
                     valueFromText: (text, locale) => Math.round(toInt(Number.fromLocaleString(locale, text)))
 
+                    value: toInt(cfg_updateInterval)
                     onValueChanged: cfg_updateInterval = fromInt(value)
 
                     function toInt(value) {
@@ -140,42 +134,75 @@ KCM.SimpleKCM {
                 Kirigami.FormData.label: "Show history for:"
 
                 QQC2.SpinBox {
-                    id: chartHistorySpinBox
+                    id: statsHistorySpinBox
 
                     stepSize: 1
                     from: 10
                     to: 3600
 
                     validator: IntValidator {
-                        bottom: chartHistorySpinBox.from
-                        top: chartHistorySpinBox.to
+                        bottom: statsHistorySpinBox.from
+                        top: statsHistorySpinBox.to
                     }
 
                     textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
                     valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
 
-                    onValueChanged: cfg_chartHistory = value
+                    value: cfg_statsHistory
+                    onValueChanged: cfg_statsHistory = value
                 }
 
                 QQC2.Label {
                     text: "seconds"
                 }
             }
+
+            Item {
+                Kirigami.FormData.label: "Miscellaneous"
+                Kirigami.FormData.isSection: true
+            }
+
+            QQC2.CheckBox {
+                id: scrollAppletBox
+                Kirigami.FormData.label: "Scrolling:"
+
+                text: "Scroll applet to change sensor"
+                checked: cfg_scrollApplet
+                onCheckedChanged: { cfg_scrollApplet = checked; }
+            }
+
+            QQC2.CheckBox {
+                id: scrollAppletOpensPopupBox
+
+                leftPadding: scrollAppletBox.indicator.width
+
+                enabled: scrollAppletBox.checked
+
+                text: "Open popup on scroll"
+                checked: cfg_scrollAppletOpensPopup
+                onCheckedChanged: { cfg_scrollAppletOpensPopup = checked; }
+            }
+
+            QQC2.CheckBox {
+                id: scrollPopupBox
+
+                text: "Scroll popup to change sensor"
+                checked: cfg_scrollPopup
+                onCheckedChanged: { cfg_scrollPopup = checked; }
+            }
+
+            QQC2.CheckBox {
+                id: scrollWraparoundBox
+
+                text: "Wrap around"
+                checked: cfg_scrollWraparound
+                onCheckedChanged: { cfg_scrollWraparound = checked; }
+            }
         }
 
         Kirigami.InlineMessage {
             id: temperatureUnitChangedMessage
             Layout.fillWidth: true
-
-            property bool firstOpen: true
-
-            function show() {
-                if (firstOpen) {
-                    firstOpen = false;
-                } else {
-                    visible = true;
-                }
-            }
 
             visible: false
             showCloseButton: true

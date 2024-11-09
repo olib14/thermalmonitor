@@ -36,6 +36,21 @@
             </choices>
             <default>0</default>
         </entry>
+        <entry name="statsHistory" type="Int">
+            <default>60</default>
+        </entry>
+        <entry name="scrollApplet" type="Bool">
+            <default>true</default>
+        </entry>
+        <entry name="scrollAppletOpensPopup" type="Bool">
+            <default>false</default>
+        </entry>
+        <entry name="scrollPopup" type="Bool">
+            <default>true</default>
+        </entry>
+        <entry name="scrollWraparound" type="Bool">
+            <default>false</default>
+        </entry>
     </group>
 
     <group name="Appearance">
@@ -59,9 +74,6 @@
         </entry>
         <entry name="showStats" type="Bool">
             <default>true</default>
-        </entry>
-        <entry name="chartHistory" type="Int">
-            <default>60</default>
         </entry>
         <entry name="chartAutomaticScale" type="Bool">
             <default>true</default>
