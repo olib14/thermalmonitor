@@ -119,7 +119,6 @@ Item {
 
                 onIntervalChanged: {
                     values = Array(maximumLength).fill(undefined);
-                    restart();
                 }
 
                 onMaximumLengthChanged: {
