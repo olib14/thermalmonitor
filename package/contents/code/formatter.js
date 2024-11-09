@@ -74,5 +74,9 @@ function unitString(unit, includeSpace = true) {
 }
 
 function formatTemperature(value, unit, showUnit = true) {
+    if (value === undefined) {
+        return "—";
+    }
+
     return roundedTemperature(value) + (showUnit ? unitString(unit) : "");
 }

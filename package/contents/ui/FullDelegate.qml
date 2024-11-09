@@ -101,7 +101,14 @@ RowLayout {
 
             delegate: PlasmaComponents.Label {
                 anchors.right: parent.right
-                font: Kirigami.Theme.smallFont
+
+                font: {
+                    let font = Object.assign({}, Kirigami.Theme.smallFont);
+                    font.pixelSize = undefined;
+                    font.features = { "tnum": 1 };
+                    return font;
+                }
+
                 text: Formatter.formatTemperature(ChartsControls.AxisLabels.label, sensorUnit, showUnit)
                 color: PlasmaCore.Theme.disabledTextColor
             }

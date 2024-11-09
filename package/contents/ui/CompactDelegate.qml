@@ -29,22 +29,19 @@ ColumnLayout {
     property bool swapLabels: Plasmoid.configuration.swapLabels
     property double fontScale: Plasmoid.configuration.fontScale
 
-    Connections {
-        target: Kirigami.Theme
-
-        function onDefaultFontChanged() { updateFontSize(); }
-        function onSmallFontChanged() { updateFontSize(); }
-    }
-
-    onFontScaleChanged: updateFontSize()
-
     spacing: 0
 
     PlasmaComponents.Label {
         id: primaryLabel
         Layout.alignment: Qt.AlignHCenter
 
-        font: Kirigami.Theme.defaultFont
+        font: {
+            let font = Object.assign({}, Kirigami.Theme.defaultFont);
+            font.pointSize *= fontScale;
+            font.pixelSize = undefined;
+            font.features = { "tnum": 1 };
+            return font;
+        }
 
         text: swapLabels ? nameText() : temperatureText()
         color: swapLabels ? PlasmaCore.Theme.textColor : temperatureColor()
@@ -61,9 +58,16 @@ ColumnLayout {
         id: secondaryLabel
         Layout.alignment: Qt.AlignRight
 
-        font: Kirigami.Theme.smallFont
         opacity: 0.6
         visible: text && root.height >= primaryLabel.contentHeight + contentHeight * 0.8
+
+        font: {
+            let font = Object.assign({}, Kirigami.Theme.smallFont);
+            font.pointSize *= fontScale;
+            font.pixelSize = undefined;
+            font.features = { "tnum": 1 };
+            return font;
+        }
 
         text: swapLabels ? temperatureText() : nameText()
         color: swapLabels ? temperatureColor() : PlasmaCore.Theme.textColor
@@ -76,18 +80,7 @@ ColumnLayout {
         }
     }
 
-    function updateFontSize() {
-        primaryLabel.font = Kirigami.Theme.defaultFont
-        primaryLabel.font.pointSize = Kirigami.Theme.defaultFont.pointSize * fontScale
-        secondaryLabel.font = Kirigami.Theme.smallFont
-        secondaryLabel.font.pointSize = Kirigami.Theme.smallFont.pointSize * fontScale
-    }
-
     function temperatureText() {
-        if (sensorValue === undefined) {
-            return "—";
-        }
-
         return Formatter.formatTemperature(sensorValue, sensorUnit, showUnit);
     }
 
