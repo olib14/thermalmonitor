@@ -48,10 +48,6 @@ MouseArea {
         }
     }
 
-    // TODO: Setting for toggling scrolling on applet
-    // TODO:     Setting for scrolling on applet opens popup
-    // TODO: Setting for scrolling on popup?
-
     Layout.preferredWidth:  isVertical ? -1 : layout.implicitWidth
     Layout.preferredHeight: isVertical ? layout.implicitHeight : -1
     Layout.minimumWidth:    isPanel ? Layout.preferredWidth : layout.implicitWidth
@@ -61,7 +57,7 @@ MouseArea {
     onPositionChanged: (mouse) => handlePositionChanged(mouse)
     onPressed:         (mouse) => handlePressed(mouse)
     onClicked:         (mouse) => handleClicked(mouse)
-    onWheel:           (wheel) => handleWheel(wheel) // TODO: This kind of sucks, gate behind off-by-default option?
+    onWheel:           (wheel) => handleWheel(wheel)
 
     function handlePositionChanged(mouse) : void {
         root.hoveredSensor = findClosestSensor(mouse.x, mouse.y);
@@ -116,7 +112,8 @@ MouseArea {
             return;
         }
 
-        //let delta = wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x; // TODO: Test inverted with touchpad, left/right too
+        //let delta = wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x;
+        // TODO: Test inverted with touchpad, left/right too
         let delta = (wheel.inverted ? -1 : 1) * (wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x);
 
         // Scroll up/right -> decrease index

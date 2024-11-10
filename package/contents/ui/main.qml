@@ -13,12 +13,6 @@ import "../code/formatter.js" as Formatter
 PlasmoidItem {
     id: root
 
-    // TODO: Add pinned property defaults to false
-    // override with binding when a config setting to remember pinned is checked
-    // and set to the property and have that update it and whatever
-
-    // Could go in a Behaviour settings page
-
     property list<QtObject> sensors: sensorsLoader.item?.sensors ?? []
     readonly property bool needsConfiguration: sensors.length === 0
 
@@ -78,8 +72,14 @@ PlasmoidItem {
 
         if (previousVersion != "") {
             // TODO: Upgrade!
-            // Could work with array of versions and functions to upgrade,
-            // run each matching function in order, do in ../code/upgrade.js
+
+            // Could work with array of versions and functions to upgrade, run
+            // each matching function in order, do in ../code/upgrade.js
+
+            // Can pass in Plasmoid.configuration, can transform config
+
+            // Possibly access old config with same name in some "Historical"
+            // group, but might need to be same group
         }
 
         Plasmoid.configuration.lastSeenVersion = currentVersion;

@@ -14,10 +14,6 @@ import org.kde.kirigami as Kirigami
 KCM.ScrollViewKCM {
     id: root
 
-    // KDE TODO: Header should have no margins to allow for banner usage, and should come with separators
-    // KDE TODO: Header actions should be supported in Plasmoid settings
-    // KDE TODO: No error should be emitted when a property does not exist in a config page
-
     property string cfg_sensors
 
     // HACK: Suppresses errors

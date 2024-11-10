@@ -194,7 +194,8 @@ PlasmaExtras.Representation {
                     return;
                 }
 
-                //let delta = wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x; // TODO: Test inverted with touchpad, left/right too
+                //let delta = wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x;
+                // TODO: Test inverted with touchpad, left/right too
                 let delta = (wheel.inverted ? -1 : 1) * (wheel.angleDelta.y ? wheel.angleDelta.y : wheel.angleDelta.x);
 
                 // Scroll up/right -> decrease index
