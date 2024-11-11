@@ -58,22 +58,6 @@ KCM.SimpleKCM {
     property int cfg_chartFromYDefault
     property int cfg_chartToYDefault
 
-    onCfg_showUnitChanged: { showUnitBox.checked = cfg_showUnit; }
-    onCfg_enableDangerColorChanged: { enableDangerColorBox.checked = cfg_enableDangerColor; }
-    onCfg_warningThresholdChanged: { warningThresholdSpinBox.value = cfg_warningThreshold; }
-    onCfg_meltdownThresholdChanged: { meltdownThresholdSpinBox.value = cfg_meltdownThreshold; }
-    onCfg_swapLabelsChanged: {
-        primaryLabelTemperatureButton.checked = !cfg_swapLabels;
-        primaryLabelNameButton.checked = cfg_swapLabels;
-    }
-    onCfg_fontScaleChanged: { fontScaleSpinBox.value = fontScaleSpinBox.toInt(cfg_fontScale) }
-    onCfg_showStatsChanged: { showStatsBox.checked = cfg_showStats; }
-    onCfg_chartAutomaticScaleChanged: { chartAutomaticScaleBox.checked = cfg_chartAutomaticScale; }
-    onCfg_chartFromYChanged: { chartFromYSpinBox.value = cfg_chartFromY; }
-    onCfg_chartToYChanged: { chartToYSpinBox.value = cfg_chartToY; }
-
-    Component.onCompleted: cfg_swapLabelsChanged()
-
     Kirigami.FormLayout {
 
         Item {
@@ -86,7 +70,8 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: "Temperature:"
 
             text: "Show unit"
-            onCheckedChanged: { cfg_showUnit = checked; }
+            checked: cfg_showUnit
+            onCheckedChanged: cfg_showUnit = checked
         }
 
         Item {
@@ -97,7 +82,8 @@ KCM.SimpleKCM {
             id: enableDangerColorBox
 
             text: "Enable danger color"
-            onCheckedChanged: { cfg_enableDangerColor = checked; }
+            checked: cfg_enableDangerColor
+            onCheckedChanged: cfg_enableDangerColor = checked
         }
 
         QQC2.Label {
@@ -137,6 +123,7 @@ KCM.SimpleKCM {
                 textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
                 valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
 
+                value: cfg_warningThreshold
                 onValueChanged: cfg_warningThreshold = value
             }
 
@@ -172,6 +159,7 @@ KCM.SimpleKCM {
                 textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
                 valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
 
+                value: cfg_meltdownThreshold
                 onValueChanged: cfg_meltdownThreshold = value
             }
 
@@ -185,13 +173,16 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: true
         }
 
-        QQC2.ButtonGroup { id: primaryLabelGroup }
+        QQC2.ButtonGroup {
+            id: primaryLabelGroup
+        }
 
         QQC2.RadioButton {
             id: primaryLabelTemperatureButton
             Kirigami.FormData.label: "Primary label:"
 
             text: "Temperature"
+            checked: !cfg_swapLabels
             onCheckedChanged: if (checked) cfg_swapLabels = false
         }
 
@@ -199,6 +190,7 @@ KCM.SimpleKCM {
             id: primaryLabelNameButton
 
             text: "Name"
+            checked: cfg_swapLabels
             onCheckedChanged: if (checked) cfg_swapLabels = true
         }
 
@@ -221,14 +213,10 @@ KCM.SimpleKCM {
                 notation: DoubleValidator.StandardNotation
             }
 
-            textFromValue: (value, locale) => {
-                return Number(fromInt(value)).toLocaleString(locale, 'f', 1);
-            }
+            textFromValue: (value, locale) => Number(fromInt(value)).toLocaleString(locale, 'f', 1)
+            valueFromText: (text, locale) => Math.round(toInt(Number.fromLocaleString(locale, text)))
 
-            valueFromText: (text, locale) => {
-                return Math.round(toInt(Number.fromLocaleString(locale, text)));
-            }
-
+            value: toInt(cfg_fontScale)
             onValueChanged: { cfg_fontScale = fromInt(value); }
 
             function toInt(value) {
@@ -250,7 +238,8 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: "Statistics:"
 
             text: "Show average, min and max temperatures"
-            onCheckedChanged: { cfg_showStats = checked; }
+            checked: cfg_showStats
+            onCheckedChanged: cfg_showStats = checked
         }
 
         Item {
@@ -262,7 +251,8 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: "Chart:"
 
             text: "Automatic scale"
-            onCheckedChanged: { cfg_chartAutomaticScale = checked; }
+            checked: cfg_chartAutomaticScale
+            onCheckedChanged: cfg_chartAutomaticScale = checked
         }
 
         RowLayout {
@@ -294,6 +284,7 @@ KCM.SimpleKCM {
                 textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
                 valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
 
+                value: cfg_chartFromY
                 onValueChanged: cfg_chartFromY = value
             }
 
@@ -331,6 +322,7 @@ KCM.SimpleKCM {
                 textFromValue: (value, locale) => Number(value).toLocaleString(locale, 'f', 0)
                 valueFromText: (text, locale) => Number.fromLocaleString(locale, text)
 
+                value: cfg_chartToY
                 onValueChanged: cfg_chartToY = value
             }
 

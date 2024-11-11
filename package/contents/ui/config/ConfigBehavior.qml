@@ -146,7 +146,9 @@ KCM.SimpleKCM {
                 }
             }
 
-            Item { Kirigami.FormData.isSection: true }
+            Item {
+                Kirigami.FormData.isSection: true
+            }
 
             RowLayout {
                 Kirigami.FormData.label: "Show history for:"
@@ -186,7 +188,7 @@ KCM.SimpleKCM {
 
                 text: "Scroll applet to change sensor"
                 checked: cfg_scrollApplet
-                onCheckedChanged: { cfg_scrollApplet = checked; }
+                onCheckedChanged: cfg_scrollApplet = checked
             }
 
             QQC2.CheckBox {
@@ -198,7 +200,7 @@ KCM.SimpleKCM {
 
                 text: "Open popup on scroll"
                 checked: cfg_scrollAppletOpensPopup
-                onCheckedChanged: { cfg_scrollAppletOpensPopup = checked; }
+                onCheckedChanged: cfg_scrollAppletOpensPopup = checked
             }
 
             QQC2.CheckBox {
@@ -206,7 +208,7 @@ KCM.SimpleKCM {
 
                 text: "Scroll popup to change sensor"
                 checked: cfg_scrollPopup
-                onCheckedChanged: { cfg_scrollPopup = checked; }
+                onCheckedChanged: cfg_scrollPopup = checked
             }
 
             QQC2.CheckBox {
@@ -214,7 +216,7 @@ KCM.SimpleKCM {
 
                 text: "Wrap around"
                 checked: cfg_scrollWraparound
-                onCheckedChanged: { cfg_scrollWraparound = checked; }
+                onCheckedChanged: cfg_scrollWraparound = checked
             }
         }
 
