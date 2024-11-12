@@ -10,11 +10,6 @@ import org.kde.ksysguard.sensors as Sensors
 
 import org.kde.kirigami as Kirigami
 
-// Used in a Loader to make UI load when
-// org.kde.ksysguard.sensors is not available
-
-// e.g. loader.status !== Loader.Ready
-
 Item {
     id: availableSensors
 
@@ -43,7 +38,7 @@ Item {
             return sensorId.length > 0 && display.includes("(°C)") && !display.includes("[");
         }
 
-        onRowCountChanged: model.update();
+        onRowCountChanged: model.update()
     }
 
     // Custom model, so we can give sensors better names and categorise them

@@ -60,7 +60,6 @@ KCM.ScrollViewKCM {
     property int cfg_chartToYDefault
 
     readonly property bool hasSensors: sensorsView.model.count
-    readonly property bool libAvailable: availableSensorsLoader.status === Loader.Ready
 
     // HACK: Provides footer separator
     extraFooterTopPadding: true
@@ -70,15 +69,6 @@ KCM.ScrollViewKCM {
 
     function findHeaderSeparator() {
         return root.header?.children[1] ?? null;
-    }
-
-    header: Kirigami.InlineMessage {
-        Layout.fillWidth: true
-
-        visible: !root.libAvailable
-
-        text: "The libraries <i>ksystemstats</i> (and <i>libksysguard</i>), <i>kitemmodels</i> are used to retrieve sensor data and are required to use this applet. Please ensure they are installed."
-        type: Kirigami.MessageType.Error
     }
 
     view: ListView {
@@ -121,8 +111,6 @@ KCM.ScrollViewKCM {
             Kirigami.SwipeListItem {
                 id: sensorDelegate
 
-                enabled: root.libAvailable
-
                 RowLayout {
                     height: parent.height
 
@@ -149,7 +137,7 @@ KCM.ScrollViewKCM {
                     Kirigami.Action {
                         text: i18n("Edit")
                         icon.name: "edit-entry-symbolic"
-                        onTriggered: editSensorSheet.openSensor(sensorsView.model.get(index))
+                        onTriggered: editSensorDialog.openSensor(sensorsView.model.get(index));
                     },
                     Kirigami.Action {
                         text: i18n("Delete")
@@ -166,7 +154,7 @@ KCM.ScrollViewKCM {
         Kirigami.PlaceholderMessage {
             anchors.centerIn: parent
 
-            visible: root.libAvailable && !root.hasSensors
+            visible: !root.hasSensors
 
             icon.name: "temperature-normal"
             text: "No sensors"
@@ -179,7 +167,6 @@ KCM.ScrollViewKCM {
     }
 
     footer: RowLayout {
-        enabled: root.libAvailable
         spacing: Kirigami.Units.smallSpacing
 
         QQC2.Button {
@@ -190,7 +177,7 @@ KCM.ScrollViewKCM {
 
             text: "Add Sensor…"
             icon.name: "list-add-symbolic"
-            onClicked: addSensorSheet.open()
+            onClicked: addSensorDialog.open()
         }
 
         Item {
@@ -213,144 +200,51 @@ KCM.ScrollViewKCM {
         }
     }
 
-    Kirigami.OverlaySheet {
-        id: editSensorSheet
+    AddSensorDialog {
+        id: addSensorDialog
 
-        property var editingSensor: null
+        width:  Math.min(implicitWidth, sensorsView.width  - Kirigami.Units.gridUnit * 2)
+        height: Math.min(implicitHeight, sensorsView.height - Kirigami.Units.gridUnit * 2)
 
-        width:  Kirigami.Units.gridUnit * 20
-        height: editSensorsForm.implicitHeight + Kirigami.Units.gridUnit * 3
+        addedSensorIds: Array.from({ length: sensorsModel.count }, (_, i) => sensorsModel.get(i).sensorId)
 
-        title: "Edit Sensor"
+        onAddedSensor: (name, sensorId) => {
+            sensorsView.model.append({
+                "name": name,
+                "sensorId": sensorId
+            });
+            sensorsView.model.save();
+        }
 
-        Kirigami.FormLayout {
-            id: editSensorsForm
-
-            Kirigami.SelectableLabel {
-                Kirigami.FormData.label: "Sensor:"
-                Layout.fillWidth: true
-
-                text: editSensorSheet.editingSensor?.sensorId || ""
-            }
-
-            QQC2.TextField {
-                id: sensorNameField
-
-                Kirigami.FormData.label: "Name:"
-                Layout.fillWidth: true
-
-                onTextChanged: {
-                    editSensorSheet.editingSensor.name = text;
-                    sensorsView.model.save();
+        onRemovedSensor: (sensorId) => {
+            for (var i = 0; i < sensorsModel.count; ++i) {
+                if (sensorsModel.get(i).sensorId === sensorId) {
+                    sensorsModel.remove(i);
+                    break;
                 }
             }
-        }
-
-        onEditingSensorChanged: {
-            sensorNameField.text = editSensorSheet.editingSensor.name;
-        }
-
-        function openSensor(sensor) {
-            editingSensor = sensor;
-            open();
         }
     }
 
-    Kirigami.OverlaySheet {
-        id: addSensorSheet
+    EditSensorDialog {
+        id: editSensorDialog
 
-        width:  sensorsView.width - Kirigami.Units.gridUnit * 4
-        height: sensorsView.height - Kirigami.Units.gridUnit * 4
+        property int index
 
-        title: "Add Sensor"
+        width:  Math.min(implicitWidth, sensorsView.width  - Kirigami.Units.gridUnit * 2)
+        height: Math.min(implicitHeight, sensorsView.height - Kirigami.Units.gridUnit * 2)
 
-        ListView {
-            id: addSensorsView
+        onAccepted: {
+            sensorsModel.setProperty(index, "name", name);
+        }
 
-            property alias availableSensors: availableSensorsLoader.item
+        function openSensor(index: int) : void {
+            this.index = index;
+            sensorId = sensorsModel.get(index).sensorId;
 
-            Loader {
-                id: availableSensorsLoader
+            name = sensorsModel.get(index).name;
 
-                source: "AvailableSensorsProxy.qml"
-            }
-
-            reuseItems: true
-
-            model: availableSensors?.model
-
-            section {
-                property: "section"
-                delegate: Kirigami.ListSectionHeader {
-                    required property string section
-                    width: addSensorsView.width
-                    text: section
-                }
-            }
-
-            delegate: Kirigami.SwipeListItem {
-
-                // Disable when sensor is already present
-                enabled: {
-                    for (var i = 0; i < sensorsModel.count; ++i) {
-                        if (sensorsModel.get(i).sensorId === model.sensorId) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-
-                RowLayout {
-                    height: parent.height
-
-                    spacing: Kirigami.Units.smallSpacing
-
-                    QQC2.Label {
-                        Layout.leftMargin: Kirigami.Units.largeSpacing
-
-                        text: model.name
-                        elide: Text.ElideRight
-
-                        opacity: enabled ? 1 : 0.6
-
-                        MouseArea {
-                            id: sensorDelegateMouseArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                        }
-                    }
-
-                    QQC2.Label {
-                        Layout.fillWidth: true
-
-                        font: Kirigami.Theme.smallFont
-                        text: model.sensorId
-                        elide: Text.ElideMiddle
-                        opacity: (sensorDelegateMouseArea.containsMouse ? 0.6 : 0) * (enabled ? 1 : 0.6)
-
-                        Behavior on opacity {
-                            NumberAnimation {
-                                duration: Kirigami.Units.shortDuration
-                                easing.type: Easing.InOutQuad
-                            }
-                        }
-                    }
-                }
-
-                actions: [
-                    Kirigami.Action {
-                        text: i18n("Add")
-                        icon.name: "list-add-symbolic"
-                        onTriggered: {
-                            sensorsView.model.append({
-                                "name": model.name,
-                                "sensorId": model.sensorId
-                            });
-                            sensorsView.model.save();
-                        }
-                    }
-                ]
-            }
+            open();
         }
     }
 }
