@@ -68,7 +68,7 @@ PlasmoidItem {
 
     Component.onCompleted: {
         let previousVersion = Plasmoid.configuration.lastSeenVersion;
-        let currentVersion = Plasmoid.metadata.version;
+        let currentVersion = Plasmoid.metaData.version;
 
         if (previousVersion != "") {
             // TODO: Upgrade!
