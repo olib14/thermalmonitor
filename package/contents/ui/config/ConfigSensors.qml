@@ -10,6 +10,7 @@ import QtQml.Models
 
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
+import org.kde.kquickcontrolsaddons as KQuickControlsAddons
 
 KCM.ScrollViewKCM {
     id: root
@@ -60,7 +61,6 @@ KCM.ScrollViewKCM {
 
     readonly property bool hasSensors: sensorsView.model.count
     readonly property bool libAvailable: availableSensorsLoader.status === Loader.Ready
-    readonly property bool clipboardAvailable: clipboardLoader.status === Loader.Ready
 
     // HACK: Provides footer separator
     extraFooterTopPadding: true
@@ -72,28 +72,13 @@ KCM.ScrollViewKCM {
         return root.header?.children[1] ?? null;
     }
 
-    header: ColumnLayout {
-        id: headerLayout
-        spacing: Kirigami.Units.smallSpacing
+    header: Kirigami.InlineMessage {
+        Layout.fillWidth: true
 
-        Kirigami.InlineMessage {
-            Layout.fillWidth: true
+        visible: !root.libAvailable
 
-            visible: !root.libAvailable
-
-            text: "The libraries <i>ksystemstats</i> (and <i>libksysguard</i>), <i>kitemmodels</i> are used to retrieve sensor data and are required to use this applet. Please ensure they are installed."
-            type: Kirigami.MessageType.Error
-        }
-
-        Kirigami.InlineMessage {
-            Layout.fillWidth: true
-
-            visible: !root.clipboardAvailable
-
-            text: "The library <i>kdeclarative</i> is required to export sensors to, and copy from, the  clipboard."
-            type: Kirigami.MessageType.Warning
-            showCloseButton: true
-        }
+        text: "The libraries <i>ksystemstats</i> (and <i>libksysguard</i>), <i>kitemmodels</i> are used to retrieve sensor data and are required to use this applet. Please ensure they are installed."
+        type: Kirigami.MessageType.Error
     }
 
     view: ListView {
@@ -189,10 +174,8 @@ KCM.ScrollViewKCM {
         }
     }
 
-    Loader {
-        id: clipboardLoader
-
-        Component.onCompleted: setSource("ClipboardProxy.qml")
+    KQuickControlsAddons.Clipboard {
+        id: clipboard
     }
 
     footer: RowLayout {
@@ -217,8 +200,7 @@ KCM.ScrollViewKCM {
         QQC2.Button {
             text: "Import"
             icon.name: "document-import-symbolic"
-            enabled: root.clipboardAvailable
-            onClicked: sensorsView.model.loadString(clipboardLoader.item.content)
+            onClicked: sensorsView.model.loadString(clipboard.content)
         }
 
         QQC2.Button {
@@ -227,8 +209,7 @@ KCM.ScrollViewKCM {
 
             text: "Export"
             icon.name: "document-export-symbolic"
-            enabled: root.clipboardAvailable
-            onClicked: clipboardLoader.item.content = sensorsView.model.saveString()
+            onClicked: clipboard.content = sensorsView.model.saveString()
         }
     }
 
