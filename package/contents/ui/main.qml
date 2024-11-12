@@ -13,7 +13,7 @@ import "../code/formatter.js" as Formatter
 PlasmoidItem {
     id: root
 
-    property list<QtObject> sensors: sensorsLoader.item?.sensors ?? []
+    property alias sensors: sensorsItem.sensors
     readonly property bool needsConfiguration: sensors.length === 0
 
     property int activeSensor: -1
@@ -29,10 +29,8 @@ PlasmoidItem {
         }
     }
 
-    Loader {
-        id: sensorsLoader
-
-        source: "SensorProxy.qml"
+    Sensors {
+        id: sensorsItem
     }
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground

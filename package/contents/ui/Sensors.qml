@@ -12,14 +12,10 @@ import org.kde.quickcharts as Charts
 
 import "../code/formatter.js" as Formatter
 
-// To be used with a loader, such that any users can work
-// even when org.kde.ksysguard.sensors is unavailable,
-// e.g. loader.status !== Loader.Ready
-
 Item {
-    id: sensorProxy
+    id: sensorContainer
 
-    readonly property list<var> rawSensors: JSON.parse(Plasmoid.configuration.sensors)
+    readonly property list<var> rawSensors: JSON.parse(Plasmoid.configuration.sensors) ?? []
     property list<QtObject> sensors: []
 
     readonly property var globalMin: {
@@ -38,7 +34,7 @@ Item {
         }
 
         // Create new items
-        rawSensors.forEach(item => sensors.push(sensorComponent.createObject(sensorProxy, {
+        rawSensors.forEach(item => sensors.push(sensorComponent.createObject(sensorContainer, {
             name: item.name,
             sensorId: item.sensorId
         })));
@@ -73,9 +69,9 @@ Item {
                                         ? undefined
                                         : Math.max(...history.filteredValues)
 
-            readonly property var globalMin: sensorProxy.globalMin
+            readonly property var globalMin: sensorContainer.globalMin
 
-            readonly property var globalMax: sensorProxy.globalMax
+            readonly property var globalMax: sensorContainer.globalMax
 
             Sensors.Sensor {
                 id: sensor
