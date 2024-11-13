@@ -86,4 +86,28 @@ Kirigami.Dialog {
             }
         }
     }
+
+    footer: ColumnLayout {
+        spacing: 0
+
+        Kirigami.Separator {
+            Layout.fillWidth: true
+        }
+
+        RowLayout {
+            Layout.margins: Kirigami.Units.largeSpacing
+
+            spacing: Kirigami.Units.smallSpacing
+
+            QQC2.Label {
+                text: "My sensor isn't listed"
+            }
+
+            Kirigami.ContextualHelpButton {
+                Layout.alignment: Qt.AlignLeft
+
+                toolTipText: "Sensors are provided by <i><b>ksystemstats</b></i>, which uses plugins to retrieve sensor data.<br/><br/>Any missing sensors should be reported as a feature request bug to KDE against that product."
+            }
+        }
+    }
 }
