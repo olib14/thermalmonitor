@@ -106,7 +106,7 @@ Kirigami.Dialog {
             Kirigami.ContextualHelpButton {
                 Layout.alignment: Qt.AlignLeft
 
-                toolTipText: "Sensors are provided by <i><b>ksystemstats</b></i>, which uses plugins to retrieve sensor data.<br/><br/>Any missing sensors should be reported as a feature request bug to KDE against that product."
+                toolTipText: "Sensors are provided by <i><b>ksystemstats</b></i>, which uses plugins to retrieve sensor data.<br/><br/>Any missing sensors should be reported to KDE as a feature request bug against that product."
             }
         }
     }
