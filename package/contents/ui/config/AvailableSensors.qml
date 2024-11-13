@@ -31,8 +31,8 @@ Item {
 
         sourceModel: descendantsModel
         filterRowCallback: (row, parent) => {
-            let display = sourceModel.data(sourceModel.index(row, 0), Qt.DisplayRole);
-            let sensorId = sourceModel.data(sourceModel.index(row, 0), sensorRole);
+            let display = sourceModel.data(sourceModel.index(row, 0, parent), Qt.DisplayRole);
+            let sensorId = sourceModel.data(sourceModel.index(row, 0, parent), sensorRole);
 
             // Filter: remove non-sensors, only temperature and remove groups
             return sensorId.length > 0 && display.includes("(°C)") && !display.includes("[");
@@ -62,18 +62,16 @@ Item {
                     categoryIndex = categoryIndex.parent;
                 }
 
-                // Get category and subcategory names
-                let categoryName = sensorTreeModel.data(categoryIndex, Qt.DisplayRole);
-                let subcategoryName = sensorTreeModel.data(subcategoryIndex, Qt.DisplayRole);
-                // TODO: AvailableSensorsProxy.qml:72: TypeError: Passing incompatible arguments to C++ functions from JavaScript is not allowed.
-
                 // For Hardware Sensors, prepend the subcategory name
-                if (sensorId.includes("lmsensors")) {
+                if (sensorId.includes("lmsensors") && subcategoryIndex != null) {
+                    let subcategoryName = sensorTreeModel.data(subcategoryIndex, Qt.DisplayRole);
                     name = subcategoryName + ": " + name;
                 }
 
-                //console.log("adding sensor:", name, "(" + categoryName + ", " + sensorId + ")");
+                let categoryName = sensorTreeModel.data(categoryIndex, Qt.DisplayRole);
                 model.set(i, { "name": name, "sensorId": sensorId, "section": categoryName });
+
+                //console.log("adding sensor:", name, "(" + categoryName + ", " + sensorId + ")");
             }
         }
     }
