@@ -45,7 +45,7 @@ PlasmoidItem {
             return Plasmoid.title;
         }
 
-        return "%1 — %2".arg(sensors[hoveredSensor].name).arg(Plasmoid.title);
+        return "%1 — %2".arg(sensors[hoveredSensor]?.name ?? "").arg(Plasmoid.title);
     }
     toolTipSubText: {
         if (needsConfiguration) {
@@ -56,12 +56,12 @@ PlasmoidItem {
             return "";
         }
 
-        let unit = sensors[hoveredSensor].unit;
+        let unit = sensors[hoveredSensor]?.unit ?? 0;
         let showUnit = Plasmoid.configuration.showUnit;
         return "Average\t%1\nMinimum\t%2\nMaximum\t%3" // NOTE: \t likely poor with translation
-            .arg(Formatter.formatTemperature(sensors[hoveredSensor].avg, unit, showUnit))
-            .arg(Formatter.formatTemperature(sensors[hoveredSensor].min, unit, showUnit))
-            .arg(Formatter.formatTemperature(sensors[hoveredSensor].max, unit, showUnit));
+            .arg(Formatter.formatTemperature(sensors[hoveredSensor]?.avg ?? 0, unit, showUnit))
+            .arg(Formatter.formatTemperature(sensors[hoveredSensor]?.min ?? 0, unit, showUnit))
+            .arg(Formatter.formatTemperature(sensors[hoveredSensor]?.max ?? 0, unit, showUnit));
     }
 
     Component.onCompleted: {
