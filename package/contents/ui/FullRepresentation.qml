@@ -218,7 +218,7 @@ PlasmaExtras.Representation {
         // necessary because of our CompactRepresentation, so let's just hide it
         Component.onCompleted: findPageRectangle().visible = false
 
-        function findPageRectangle() {
+        function findPageRectangle() : QtObject {
             for (let i = 0; i < pageRow.children.length; ++i) {
                 let child = pageRow.children[i];
                 if (child instanceof Rectangle) {

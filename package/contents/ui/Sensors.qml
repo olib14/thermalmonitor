@@ -91,7 +91,7 @@ Item {
             Connections {
                 target: Plasmoid.configuration
 
-                function onTemperatureUnitChanged() {
+                function onTemperatureUnitChanged() : void {
                     history.values = history.values.map(value => Formatter.convertUnit(value, sensorItem.unit, Plasmoid.configuration.temperatureUnit));
                     sensorItem.unit = Plasmoid.configuration.temperatureUnit;
                 }

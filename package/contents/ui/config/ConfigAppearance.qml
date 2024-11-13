@@ -219,11 +219,11 @@ KCM.SimpleKCM {
             value: toInt(cfg_fontScale)
             onValueChanged: { cfg_fontScale = fromInt(value); }
 
-            function toInt(value) {
+            function toInt(value: double) : int {
                 return value * 10;
             }
 
-            function fromInt(value) {
+            function fromInt(value: int) : double {
                 return value / 10;
             }
         }

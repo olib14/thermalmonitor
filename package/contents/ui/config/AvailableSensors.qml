@@ -45,7 +45,7 @@ Item {
     ListModel {
         id: model
 
-        function update() {
+        function update() : void {
             clear();
             for (let i = 0; i < filterModel.rowCount(); ++i) {
                 let index = filterModel.index(i, 0);

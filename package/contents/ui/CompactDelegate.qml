@@ -80,11 +80,11 @@ ColumnLayout {
         }
     }
 
-    function temperatureText() {
+    function temperatureText() : string {
         return Formatter.formatTemperature(sensorValue, sensorUnit, showUnit);
     }
 
-    function nameText() {
+    function nameText() : string {
         if (sensorName === undefined) {
             return "—";
         }
@@ -92,7 +92,7 @@ ColumnLayout {
         return sensorName;
     }
 
-    function temperatureColor() {
+    function temperatureColor() : color {
         if (enableDangerColor && sensorValue !== undefined) {
             let temperature = Formatter.roundedTemperature(sensorValue);
 

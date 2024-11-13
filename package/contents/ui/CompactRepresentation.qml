@@ -59,11 +59,11 @@ MouseArea {
     onClicked:         (mouse) => handleClicked(mouse)
     onWheel:           (wheel) => handleWheel(wheel)
 
-    function handlePositionChanged(mouse) : void {
+    function handlePositionChanged(mouse: MouseEvent) : void {
         root.hoveredSensor = findClosestSensor(mouse.x, mouse.y);
     }
 
-    function handlePressed(mouse) : void {
+    function handlePressed(mouse: MouseEvent) : void {
         if (root.needsConfiguration || !isPanel) {
             return;
         }
@@ -72,7 +72,7 @@ MouseArea {
         pressedSensor = findClosestSensor(mouse.x, mouse.y);
     }
 
-    function handleClicked(mouse) : void {
+    function handleClicked(mouse: MouseEvent) : void {
         // TODO: Improve desktop behaviour - switch representation, find way to
         // disable highlight on desktop, many opportunities.
         // For now, no popup on desktop.
@@ -107,7 +107,7 @@ MouseArea {
         }
     }
 
-    function handleWheel(wheel) : void {
+    function handleWheel(wheel: WheelEvent) : void {
         if (root.needsConfiguation || root.sensors.length < 2 || !Plasmoid.configuration.scrollApplet) {
             return;
         }
@@ -149,7 +149,7 @@ MouseArea {
         }
     }
 
-    function findClosestSensor(x, y) : int {
+    function findClosestSensor(x: real, y: real) : int {
         // Required because a mouse area on each delegate would have gaps on all
         // sides - getting the closest is the best way to ensure input is
         // registered as expected
@@ -270,19 +270,19 @@ MouseArea {
         Connections {
             target: compactRepresentation
 
-            function onIsVerticalChanged() { Qt.callLater(highlight.updateHighlight); }
+            function onIsVerticalChanged() : void { Qt.callLater(highlight.updateHighlight); }
         }
 
         Connections {
             target: highlight.highlightedItem
 
-            function onXChanged()      { Qt.callLater(highlight.updateHighlight); }
-            function onYChanged()      { Qt.callLater(highlight.updateHighlight); }
-            function onWidthChanged()  { Qt.callLater(highlight.updateHighlight); }
-            function onHeightChanged() { Qt.callLater(highlight.updateHighlight); }
+            function onXChanged()      : void { Qt.callLater(highlight.updateHighlight); }
+            function onYChanged()      : void { Qt.callLater(highlight.updateHighlight); }
+            function onWidthChanged()  : void { Qt.callLater(highlight.updateHighlight); }
+            function onHeightChanged() : void { Qt.callLater(highlight.updateHighlight); }
         }
 
-        function updateHighlight(suppressAnim = true) {
+        function updateHighlight(suppressAnim = true) : void {
             let item = highlightedItem
 
             if (item == null) {
@@ -360,7 +360,7 @@ MouseArea {
     // let's just hide it
     Component.onCompleted: findNativeHighlight().visible = false
 
-    function findNativeHighlight() {
+    function findNativeHighlight() : QtObject {
         let plasmoidItem = compactRepresentation.parent;
 
         let compactApplet = null;

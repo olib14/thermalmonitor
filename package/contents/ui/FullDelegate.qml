@@ -154,11 +154,11 @@ RowLayout {
 
             yRange {
                 automatic: false
-                from: chartAutomaticScale ? toNearest(sensorGlobalMin - 15, 20) : chartFromY
-                to: chartAutomaticScale ? toNearest(sensorGlobalMax + 15, 20) : chartToY
+                from: chartAutomaticScale && sensorGlobalMin != undefined ? toNearest(sensorGlobalMin - 15, 20) : chartFromY
+                to: chartAutomaticScale && sensorGlobalMax != undefined ? toNearest(sensorGlobalMax + 15, 20) : chartToY
             }
 
-            function toNearest(value, increment) {
+            function toNearest(value: int, increment: int) : int {
                 return Math.round(value / increment) * increment;
             }
 

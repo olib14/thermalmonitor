@@ -67,7 +67,7 @@ KCM.ScrollViewKCM {
     // HACK: Provides header separator
     Component.onCompleted: findHeaderSeparator().visible = true
 
-    function findHeaderSeparator() {
+    function findHeaderSeparator() : QtObject {
         return root.header?.children[1] ?? null;
     }
 
@@ -82,14 +82,14 @@ KCM.ScrollViewKCM {
 
             Component.onCompleted: loadString(root.cfg_sensors)
 
-            function loadString(string) {
+            function loadString(string: string) : void {
                 let sensors = JSON.parse(string);
                 clear();
                 sensors.forEach((sensor) => append(sensor));
                 save();
             }
 
-            function saveString() {
+            function saveString() : void {
                 let sensors = [];
                 for (var i = 0; i < count; ++i) {
                     sensors.push(get(i));
@@ -97,7 +97,7 @@ KCM.ScrollViewKCM {
                 return JSON.stringify(sensors);
             }
 
-            function save() {
+            function save() : void {
                 root.cfg_sensors = saveString();
             }
         }
