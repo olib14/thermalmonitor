@@ -89,7 +89,7 @@ KCM.ScrollViewKCM {
                 save();
             }
 
-            function saveString() : void {
+            function saveString() : string {
                 let sensors = [];
                 for (var i = 0; i < count; ++i) {
                     sensors.push(get(i));
