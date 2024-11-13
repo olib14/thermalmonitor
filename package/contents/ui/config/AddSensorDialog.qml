@@ -45,6 +45,7 @@ Kirigami.Dialog {
 
         delegate: QQC2.ItemDelegate {
 
+            required property int index
             required property string name
             required property string sensorId
 
@@ -55,7 +56,7 @@ Kirigami.Dialog {
             down: false
             highlighted: false
             hoverEnabled: false
-            Kirigami.Theme.useAlternateBackgroundColor: true // TODO: Y U NO WORK‽
+            Kirigami.Theme.useAlternateBackgroundColor: true
 
             contentItem: RowLayout {
                 spacing: Kirigami.Units.smallSpacing
