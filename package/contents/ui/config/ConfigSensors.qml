@@ -59,7 +59,7 @@ KCM.ScrollViewKCM {
     property int cfg_chartToY
     property int cfg_chartToYDefault
 
-    readonly property bool hasSensors: sensorsView.model.count
+    readonly property bool hasSensors: sensorsModel.count
 
     // HACK: Provides footer separator
     extraFooterTopPadding: true
@@ -80,7 +80,7 @@ KCM.ScrollViewKCM {
         model: ListModel {
             id: sensorsModel
 
-            Component.onCompleted: { loadString(root.cfg_sensors); }
+            Component.onCompleted: loadString(root.cfg_sensors)
 
             function loadString(string) {
                 let sensors = JSON.parse(string);
@@ -102,52 +102,71 @@ KCM.ScrollViewKCM {
             }
         }
 
-        delegate: Item {
-            // Item required to make Kirigami.ListItemDragHandle work
+        moveDisplaced: Transition {
+            NumberAnimation {
+                properties: "y"
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.InOutQuad
+            }
+        }
 
-            width: sensorsView.width
+        delegate: Item {
+
+            required property int index
+            required property string name
+
+            implicitWidth: sensorsView.width
             implicitHeight: sensorDelegate.height
 
-            Kirigami.SwipeListItem {
+            QQC2.ItemDelegate {
                 id: sensorDelegate
 
-                RowLayout {
-                    height: parent.height
+                width: sensorsView.width
 
-                    spacing: Kirigami.Units.largeSpacing
+                down: false
+                highlighted: false
+                hoverEnabled: false
+                Kirigami.Theme.useAlternateBackgroundColor: true
+
+                contentItem: RowLayout {
+                    spacing: Kirigami.Units.smallSpacing
 
                     Kirigami.ListItemDragHandle {
-                        Layout.leftMargin: Kirigami.Units.largeSpacing
-
                         listItem: sensorDelegate
                         listView: sensorsView
                         onMoveRequested: (oldIndex, newIndex) => {
-                            sensorsView.model.move(oldIndex, newIndex, 1);
-                            sensorsView.model.save();
+                            sensorsModel.move(oldIndex, newIndex, 1);
+                            sensorsModel.save();
                         }
                     }
 
                     QQC2.Label {
                         Layout.fillWidth: true
+
                         text: name
                     }
-                }
 
-                actions: [
-                    Kirigami.Action {
-                        text: i18n("Edit")
+                    QQC2.ToolButton {
                         icon.name: "edit-entry-symbolic"
-                        onTriggered: editSensorDialog.openSensor(sensorsView.model.get(index));
-                    },
-                    Kirigami.Action {
-                        text: i18n("Delete")
-                        icon.name: "edit-delete-remove-symbolic"
-                        onTriggered: {
-                            sensorsView.model.remove(index, 1);
-                            sensorsView.model.save();
+                        onClicked: editSensorDialog.openSensor(sensorsModel.get(index))
+
+                        QQC2.ToolTip {
+                            text: "Edit"
                         }
                     }
-                ]
+
+                    QQC2.ToolButton {
+                        icon.name: "edit-delete-remove-symbolic"
+                        onClicked: {
+                            sensorsModel.remove(index, 1);
+                            sensorsModel.save();
+                        }
+
+                        QQC2.ToolTip {
+                            text: "Delete"
+                        }
+                    }
+                }
             }
         }
 
@@ -156,7 +175,7 @@ KCM.ScrollViewKCM {
 
             visible: !root.hasSensors
 
-            icon.name: "temperature-normal"
+            icon.name: "temperature-warm"
             text: "No sensors"
             explanation: "Click <i>%1</i> to get started".arg(addSensorButton.text)
         }
@@ -187,7 +206,7 @@ KCM.ScrollViewKCM {
         QQC2.Button {
             text: "Import"
             icon.name: "document-import-symbolic"
-            onClicked: sensorsView.model.loadString(clipboard.content)
+            onClicked: sensorsModel.loadString(clipboard.content)
         }
 
         QQC2.Button {
@@ -196,7 +215,7 @@ KCM.ScrollViewKCM {
 
             text: "Export"
             icon.name: "document-export-symbolic"
-            onClicked: clipboard.content = sensorsView.model.saveString()
+            onClicked: clipboard.content = sensorsModel.saveString()
         }
     }
 
@@ -209,17 +228,18 @@ KCM.ScrollViewKCM {
         addedSensorIds: Array.from({ length: sensorsModel.count }, (_, i) => sensorsModel.get(i).sensorId)
 
         onAddedSensor: (name, sensorId) => {
-            sensorsView.model.append({
+            sensorsModel.append({
                 "name": name,
                 "sensorId": sensorId
             });
-            sensorsView.model.save();
+            sensorsModel.save();
         }
 
         onRemovedSensor: (sensorId) => {
             for (var i = 0; i < sensorsModel.count; ++i) {
                 if (sensorsModel.get(i).sensorId === sensorId) {
                     sensorsModel.remove(i);
+                    sensorsModel.save();
                     break;
                 }
             }
