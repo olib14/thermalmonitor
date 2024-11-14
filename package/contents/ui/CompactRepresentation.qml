@@ -185,6 +185,8 @@ MouseArea {
         rowSpacing:    Kirigami.Units.smallSpacing * fontScale
 
         Kirigami.Icon {
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
             source: plasmoid.icon
             active: compactRepresentation.containsMouse
             activeFocusOnTab: true
