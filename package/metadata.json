@@ -3,7 +3,7 @@
     "KPlugin": {
         "Name": "Thermal Monitor",
         "Id": "org.kde.olib.thermalmonitor",
-        "Description": "Shows system temperatures",
+        "Description": "System temperatures at a glance",
         "Category": "System Information",
         "Icon": "temperature-warm",
         "Authors": [
