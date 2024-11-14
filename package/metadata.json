@@ -12,7 +12,7 @@
                 "Name": "Oliver Beard"
             }
         ],
-        "Version": "0.1.7",
+        "Version": "0.2.0",
         "License": "MIT",
         "Website": "https://invent.kde.org/olib/thermalmonitor",
         "BugReportUrl": "https://invent.kde.org/olib/thermalmonitor/-/issues"
