@@ -16,9 +16,6 @@
     </group>
 
     <group name="General">
-        <entry name="lastSeenVersion" type="String">
-            <default></default>
-        </entry>
         <entry name="sensors" type="String">
             <default>[]</default>
         </entry>
