@@ -64,11 +64,12 @@ MouseArea {
     }
 
     function handlePressed(mouse: MouseEvent) : void {
+        wasExpanded = root.expanded;
+
         if (root.needsConfiguration || !isPanel) {
             return;
         }
 
-        wasExpanded = root.expanded;
         pressedSensor = findClosestSensor(mouse.x, mouse.y);
     }
 
