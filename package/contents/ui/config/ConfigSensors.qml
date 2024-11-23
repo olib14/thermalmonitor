@@ -256,6 +256,7 @@ KCM.ScrollViewKCM {
 
         onAccepted: {
             sensorsModel.setProperty(index, "name", name);
+            sensorsModel.save();
         }
 
         function openSensor(index: int) : void {
