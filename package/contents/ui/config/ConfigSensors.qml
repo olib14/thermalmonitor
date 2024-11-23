@@ -148,7 +148,7 @@ KCM.ScrollViewKCM {
 
                     QQC2.ToolButton {
                         icon.name: "edit-entry-symbolic"
-                        onClicked: editSensorDialog.openSensor(sensorsModel.get(index))
+                        onClicked: editSensorDialog.openSensor(index)
 
                         QQC2.ToolTip {
                             text: "Edit"
