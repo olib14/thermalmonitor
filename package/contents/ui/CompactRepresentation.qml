@@ -59,11 +59,13 @@ MouseArea {
     onClicked:         (mouse) => handleClicked(mouse)
     onWheel:           (wheel) => handleWheel(wheel)
 
-    function handlePositionChanged(mouse: MouseEvent) : void {
+    // COMPAT: Qt 6.8.2, MouseEvent is not a type
+    function handlePositionChanged(mouse) : void {
         root.hoveredSensor = findClosestSensor(mouse.x, mouse.y);
     }
 
-    function handlePressed(mouse: MouseEvent) : void {
+    // COMPAT: Qt 6.8.2, MouseEvent is not a type
+    function handlePressed(mouse) : void {
         wasExpanded = root.expanded;
 
         if (root.needsConfiguration || !isPanel) {
@@ -73,7 +75,8 @@ MouseArea {
         pressedSensor = findClosestSensor(mouse.x, mouse.y);
     }
 
-    function handleClicked(mouse: MouseEvent) : void {
+    // COMPAT: Qt 6.8.2, MouseEvent is not a type
+    function handleClicked(mouse) : void {
         // TODO: Improve desktop behaviour - switch representation, find way to
         // disable highlight on desktop, many opportunities.
         // For now, no popup on desktop.
@@ -108,7 +111,8 @@ MouseArea {
         }
     }
 
-    function handleWheel(wheel: WheelEvent) : void {
+    // COMPAT: Qt 6.8.2, WheelEvent is not a type
+    function handleWheel(wheel) : void {
         if (root.needsConfiguation || root.sensors.length < 2 || !Plasmoid.configuration.scrollApplet) {
             return;
         }
