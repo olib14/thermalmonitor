@@ -206,7 +206,14 @@ KCM.ScrollViewKCM {
         QQC2.Button {
             text: "Import"
             icon.name: "document-import-symbolic"
-            onClicked: sensorsModel.loadString(clipboard.content)
+            onClicked: {
+                try {
+                    sensorsModel.loadString(clipboard.content);
+                    showPassiveNotification("Sensors have been pasted from the clipboard");
+                } catch (e) {
+                    showPassiveNotification("An error occured pasting sensors from the clipboard:\n%1".arg(e.message));
+                }
+            }
         }
 
         QQC2.Button {
@@ -215,7 +222,10 @@ KCM.ScrollViewKCM {
 
             text: "Export"
             icon.name: "document-export-symbolic"
-            onClicked: clipboard.content = sensorsModel.saveString()
+            onClicked: {
+                clipboard.content = sensorsModel.saveString();
+                showPassiveNotification("Sensors have been copied to the clipboard");
+            }
         }
     }
 
