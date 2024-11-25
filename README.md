@@ -1,6 +1,6 @@
 # Thermal Monitor
 
-System temperatures at a glance.
+System temperatures at a glance
 
 ![Plasmoid on the panel and desktop, with popup shown](promo/banner1.png)
 
