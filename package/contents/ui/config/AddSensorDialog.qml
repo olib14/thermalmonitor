@@ -52,6 +52,12 @@ Kirigami.Dialog {
             readonly property bool added: dialog.addedSensorIds.includes(sensorId)
 
             width: view.width
+            // HACK: Workaround for some unknown Qt bug
+            // First item created (first sensor delegate) has the wrong width,
+            // and is not updated to match the other correct delegates.
+            // This can be debugged with Component.onCompleted and
+            // onWidthChanged logging width & view.width to console.
+            onWidthChanged: if (width != view.width) { width = view.width; }
 
             down: false
             highlighted: false
