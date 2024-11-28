@@ -62,8 +62,6 @@ Kirigami.Dialog {
                 spacing: Kirigami.Units.smallSpacing
 
                 QQC2.Label {
-                    Layout.fillWidth: true
-
                     text: name
                     elide: Text.ElideRight
 
@@ -73,6 +71,10 @@ Kirigami.Dialog {
                     QQC2.ToolTip.delay: Application.styleHints.mousePressAndHoldInterval
                     QQC2.ToolTip.text: (truncated ? name + "\n" : "" ) + sensorId
                     HoverHandler { id: nameHoverHandler }
+                }
+
+                Item {
+                    Layout.fillWidth: true
                 }
 
                 QQC2.ToolButton {
