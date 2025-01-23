@@ -50,6 +50,7 @@ PlasmaExtras.Representation {
                 Shortcut {
                     sequence: "Left"
                     onActivated: leftButton.clicked()
+                    enabled: root.activeSensor !== -1
                 }
             }
 
@@ -72,6 +73,7 @@ PlasmaExtras.Representation {
                 Shortcut {
                     sequence: "Right"
                     onActivated: rightButton.clicked()
+                    enabled: root.activeSensor !== -1
                 }
             }
 
