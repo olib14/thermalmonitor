@@ -49,7 +49,7 @@ Item {
             property string name
             property alias sensorId: sensor.sensorId
 
-            property int unit: Plasmoid.configuration.temperatureUnit
+            readonly property int unit: Plasmoid.configuration.temperatureUnit
 
             readonly property var value: sensor.isValueReady
                                           ? Formatter.convertUnit(sensor.value, Formatter.Units.Celsius, unit)
@@ -72,6 +72,10 @@ Item {
             readonly property var globalMin: sensorContainer.globalMin
 
             readonly property var globalMax: sensorContainer.globalMax
+
+            function clearHistory() : void {
+                history.clear();
+            }
 
             Sensors.Sensor {
                 id: sensor

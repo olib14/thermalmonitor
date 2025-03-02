@@ -88,6 +88,21 @@ PlasmaExtras.Representation {
             }
 
             PlasmaComponents.ToolButton {
+                id: clearButton
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                icon.name: "edit-clear-history-symbolic"
+                text: "Clear History"
+                display: PlasmaComponents.ToolButton.IconOnly
+
+                PlasmaComponents.ToolTip.text: text
+                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
+                PlasmaComponents.ToolTip.visible: hovered
+
+                onClicked: root.sensors[root.activeSensor]?.clearHistory() ?? undefined
+            }
+
+            PlasmaComponents.ToolButton {
                 id: configureButton
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
