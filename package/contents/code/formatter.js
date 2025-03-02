@@ -23,7 +23,6 @@ function convertUnit(value, from, to) {
                 default:
                     return undefined;
             }
-            break;
         case Units.Fahrenheit:
             switch (to) {
                 case Units.Celsius:
@@ -33,7 +32,6 @@ function convertUnit(value, from, to) {
                 default:
                     return undefined;
             }
-            break;
         case Units.Kelvin:
             switch (to) {
                 case Units.Celsius:
@@ -43,7 +41,6 @@ function convertUnit(value, from, to) {
                 default:
                     return undefined;
             }
-            break;
         default:
             return undefined;
     }

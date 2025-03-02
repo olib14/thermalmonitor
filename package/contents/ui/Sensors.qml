@@ -49,10 +49,10 @@ Item {
             property string name
             property alias sensorId: sensor.sensorId
 
-            property int unit: -1
+            property int unit: Plasmoid.configuration.temperatureUnit
 
             readonly property var value: sensor.isValueReady
-                                          ? Formatter.convertUnit(sensor.value, Formatter.Units.Celsius, Plasmoid.configuration.temperatureUnit)
+                                          ? Formatter.convertUnit(sensor.value, Formatter.Units.Celsius, unit)
                                           : undefined
 
             readonly property var history: historySource
@@ -87,24 +87,40 @@ Item {
                 updateRateLimit: Plasmoid.configuration.updateInterval * 1000
             }
 
-            Component.onCompleted: sensorItem.unit = Plasmoid.configuration.temperatureUnit
             Connections {
                 target: Plasmoid.configuration
 
                 function onTemperatureUnitChanged() : void {
-                    history.values = history.values.map(value => Formatter.convertUnit(value, sensorItem.unit, Plasmoid.configuration.temperatureUnit));
-                    sensorItem.unit = Plasmoid.configuration.temperatureUnit;
+                    // We used to convert the values, but for some reason it
+                    // started to cause a crash — even when refactored to store
+                    // the raw values. Best to just clear them.
+                    history.clear();
+                }
+
+                function onUpdateIntervalChanged() : void {
+                    // We can't really do anything useful with the original
+                    // history to retain data, so just clear it.
+                    history.clear();
+                }
+
+                function onStatsHistoryChanged() : void {
+                    // We can prepend existing data with undefined, capped at
+                    // the new length, but it's easier to just clear it.
+                    history.clear();
                 }
             }
 
             // To have our own metrics, we can't use the data accumulated in
-            // historyProxySource, so we must track it ourselves
+            // historyProxySource, so we must track it ourselves.
+            // We also must poll the value ourselves because Sensor does not
+            // reliably fire valueChanged every updateInterval ms — it is
+            // sometimes updateInterval + 500 ms.
             Timer {
                 id: history
 
                 property int maximumLength: (Plasmoid.configuration.statsHistory * 1000) / interval
                 property list<var> values: Array(maximumLength).fill(undefined)
-                property list<int> filteredValues: values.filter(value => value !== undefined)
+                property list<var> filteredValues: values.filter(value => value !== undefined && value !== NaN)
 
                 interval: Plasmoid.configuration.updateInterval * 1000
                 repeat: true
@@ -113,13 +129,9 @@ Item {
 
                 onTriggered: values = [sensorItem.value, ...values.slice(0, maximumLength - 1)]
 
-                onIntervalChanged: {
-                    values = Array(maximumLength).fill(undefined);
-                }
-
-                onMaximumLengthChanged: {
-                    let fillCount = Math.max(0, maximumLength - values.length);
-                    values = [...values.slice(0, maximumLength), ...Array(fillCount).fill(undefined)];
+                function clear() {
+                    values.fill(undefined);
+                    triggered();
                 }
             }
 

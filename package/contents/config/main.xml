@@ -31,7 +31,7 @@
                 <choice name="fahrenheit"/>
                 <choice name="kelvin"/>
             </choices>
-            <default>0</default>
+            <default>celsius</default>
         </entry>
         <entry name="statsHistory" type="Int">
             <default>60</default>
