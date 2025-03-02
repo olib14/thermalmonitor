@@ -29,7 +29,7 @@
             <choices>
                 <choice name="celsius"/>
                 <choice name="fahrenheit"/>
-                <choice name="kelvin"/>
+                <!--<choice name="kelvin"/>-->
             </choices>
             <default>celsius</default>
         </entry>

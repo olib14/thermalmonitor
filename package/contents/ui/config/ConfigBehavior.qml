@@ -89,6 +89,7 @@ KCM.SimpleKCM {
             onCheckedChanged: if (checked) { cfg_temperatureUnit = Formatter.Units.Fahrenheit; }
         }
 
+        /*
         QQC2.RadioButton {
             id: temperatureUnitKelvinButton
             QQC2.ButtonGroup.group: temperatureUnitGroup
@@ -97,6 +98,7 @@ KCM.SimpleKCM {
             checked: cfg_temperatureUnit == Formatter.Units.Kelvin;
             onCheckedChanged: if (checked) { cfg_temperatureUnit = Formatter.Units.Kelvin; }
         }
+        */
 
         Item {
             Kirigami.FormData.isSection: true
