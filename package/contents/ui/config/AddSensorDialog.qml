@@ -17,6 +17,9 @@ Kirigami.Dialog {
     signal addedSensor(name: string, sensorId: string)
     signal removedSensor(sensorId: string)
 
+    implicitWidth: Kirigami.Units.gridUnit * 36
+    implicitHeight: Kirigami.Units.gridUnit * 24
+
     title: "Add Sensor"
 
     showCloseButton: true
@@ -30,9 +33,6 @@ Kirigami.Dialog {
         }
 
         model: availableSensorsItem.model
-
-        implicitWidth: Kirigami.Units.gridUnit * 24
-        implicitHeight: Kirigami.Units.gridUnit * 16
 
         section {
             property: "section"
@@ -52,12 +52,23 @@ Kirigami.Dialog {
             readonly property bool added: dialog.addedSensorIds.includes(sensorId)
 
             width: view.width
-            // HACK: Workaround for some unknown Qt bug
-            // First item created (first sensor delegate) has the wrong width,
-            // and is not updated to match the other correct delegates.
-            // This can be debugged with Component.onCompleted and
-            // onWidthChanged logging width & view.width to console.
-            onWidthChanged: if (width != view.width) { width = view.width; }
+
+            // HACK: Workaround for some unknown Qt(?) bug:
+            // First item created (first sensor delegate) has the wrong width, and is not updated to match the other correct delegates.
+            // This can be debugged with Component.onCompleted and onWidthChanged logging width & view.width to console.
+            function correctWidth() {
+                if (index == 0 && width != view.width) {
+                    width = view.width;
+                }
+            }
+
+            Component.onCompleted: correctWidth()
+            onWidthChanged: correctWidth()
+
+            Connections {
+                target: view
+                function onWidthChanged() { correctWidth(); }
+            }
 
             down: false
             highlighted: false
