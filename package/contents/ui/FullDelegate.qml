@@ -7,7 +7,6 @@ import QtQuick
 import QtQuick.Layouts
 
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.kirigami as Kirigami
 
@@ -110,7 +109,7 @@ RowLayout {
                 }
 
                 text: Formatter.formatTemperature(ChartsControls.AxisLabels.label, sensorUnit, showUnit)
-                color: PlasmaCore.Theme.disabledTextColor
+                color: Kirigami.Theme.disabledTextColor
             }
 
             source: Charts.ChartAxisSource {
@@ -130,13 +129,13 @@ RowLayout {
                     let temperature = Formatter.roundedTemperature(sensorValue);
 
                     if (temperature >= meltdownThreshold) {
-                        return PlasmaCore.Theme.negativeTextColor;
+                        return Kirigami.Theme.negativeTextColor;
                     } else if (temperature >= warningThreshold) {
-                        return PlasmaCore.Theme.neutralTextColor;
+                        return Kirigami.Theme.neutralTextColor;
                     }
                 }
 
-                return PlasmaCore.Theme.highlightColor;
+                return Kirigami.Theme.highlightColor;
             }
 
             Behavior on color {
@@ -195,7 +194,7 @@ RowLayout {
                     }
                 }
                 // The same color as a Kirigami.Separator
-                major.color: Kirigami.ColorUtils.linearInterpolation(PlasmaCore.Theme.backgroundColor, PlasmaCore.Theme.textColor, 0.2)
+                major.color: Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.2)
                 minor.visible: false
             }
         }

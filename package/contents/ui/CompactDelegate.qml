@@ -7,7 +7,6 @@ import QtQuick
 import QtQuick.Layouts
 
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.kirigami as Kirigami
 
@@ -44,7 +43,7 @@ ColumnLayout {
         }
 
         text: swapLabels ? nameText() : temperatureText()
-        color: swapLabels ? PlasmaCore.Theme.textColor : temperatureColor()
+        color: swapLabels ? Kirigami.Theme.textColor : temperatureColor()
 
         Behavior on color {
             ColorAnimation {
@@ -70,7 +69,7 @@ ColumnLayout {
         }
 
         text: swapLabels ? temperatureText() : nameText()
-        color: swapLabels ? temperatureColor() : PlasmaCore.Theme.textColor
+        color: swapLabels ? temperatureColor() : Kirigami.Theme.textColor
 
         Behavior on color {
             ColorAnimation {
@@ -97,12 +96,12 @@ ColumnLayout {
             let temperature = Formatter.roundedTemperature(sensorValue);
 
             if (temperature >= meltdownThreshold) {
-                return PlasmaCore.Theme.negativeTextColor;
+                return Kirigami.Theme.negativeTextColor;
             } else if (temperature >= warningThreshold) {
-                return PlasmaCore.Theme.neutralTextColor;
+                return Kirigami.Theme.neutralTextColor;
             }
         }
 
-        return PlasmaCore.Theme.textColor;
+        return Kirigami.Theme.textColor;
     }
 }
