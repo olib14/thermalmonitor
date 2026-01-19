@@ -159,8 +159,8 @@ PlasmaExtras.Representation {
         }
     }
 
-    Kirigami.PageRow {
-        id: pageRow
+    ListView {
+        id: listView
         anchors.fill: parent
         // Account for margins in Representation - actually fill the view
         anchors.margins: -Kirigami.Units.smallSpacing
@@ -169,39 +169,58 @@ PlasmaExtras.Representation {
         visible: !root.needsConfiguration
 
         currentIndex: root.activeSensor
-        separatorVisible: false
-        defaultColumnWidth: width
+        onCurrentIndexChanged: root.activeSensor = currentIndex
 
-        // Inhibit scroll animation when expanding
-        Binding {
-            target: pageRow.columnView
-            property: "scrollDuration"
-            value: 0
-            when: !root.expanded
+        orientation: ListView.Horizontal
+        snapMode: ListView.SnapToItem
+
+        highlightRangeMode: ListView.StrictlyEnforceRange
+
+        preferredHighlightBegin: 0
+        preferredHighlightEnd: width
+
+        highlightMoveDuration: Kirigami.Units.longDuration
+        highlightResizeDuration: Kirigami.Units.longDuration
+
+        spacing: 0
+
+        model: root.sensors
+        delegate: Item {
+            width: listView.width
+            height: listView.height
+
+            FullDelegate {
+                anchors.fill: parent
+                anchors.margins: Kirigami.Units.smallSpacing * 2
+
+                sensorName: name
+                sensorUnit: unit
+                sensorValue: value
+                sensorHistory: history
+                sensorAvg: avg
+                sensorMin: min
+                sensorMax: max
+                sensorGlobalMin: globalMin
+                sensorGlobalMax: globalMax
+            }
         }
 
-        Instantiator {
-            model: root.sensors
-            delegate: Item {
-                FullDelegate {
-                    anchors.fill: parent
-                    anchors.margins: Kirigami.Units.smallSpacing * 2
+        // TODO: Better to use WheelHandler?
+        /*
+        WheelHandler {
+            id: wheelHandler
 
-                    sensorName: name
-                    sensorUnit: unit
-                    sensorValue: value
-                    sensorHistory: history
-                    sensorAvg: avg
-                    sensorMin: min
-                    sensorMax: max
-                    sensorGlobalMin: globalMin
-                    sensorGlobalMax: globalMax
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+
+            onWheel: (event) => {
+                const steps = Math.trunc(wheelHandler.rotation / 15); // 15 degrees is 120 angleDelta is 1 steps
+                if (steps !== 0) {
+                    wheelHandler.rotation -= steps * 15;
+                    // TODO: Handle based on steps
                 }
             }
-
-            onObjectAdded: (index, object) => pageRow.insertPage(index, object)
-            onObjectRemoved: (index, object) => pageRow.removePage(object)
         }
+        */
 
         MouseArea {
             anchors.fill: parent
@@ -229,21 +248,6 @@ PlasmaExtras.Representation {
                                                                                 : Math.min(root.activeSensor + 1, root.sensors.length - 1);
                 }
             }
-        }
-
-        // PageRow features a Rectangle indicating position, which is not
-        // necessary because of our CompactRepresentation, so let's just hide it
-        Component.onCompleted: findPageRectangle().visible = false
-
-        function findPageRectangle() : QtObject {
-            for (let i = 0; i < pageRow.children.length; ++i) {
-                let child = pageRow.children[i];
-                if (child instanceof Rectangle) {
-                    return child;
-                }
-            }
-
-            return null;
         }
     }
 }
