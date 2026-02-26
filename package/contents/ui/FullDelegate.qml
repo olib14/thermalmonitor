@@ -23,6 +23,7 @@ RowLayout {
 
     property var sensorValue
     property var sensorHistory
+    property var sensorMaxCount
     property var sensorAvg
     property var sensorMin
     property var sensorMax
@@ -150,6 +151,12 @@ RowLayout {
             valueSources: [sensorHistory]
             colorSource: Charts.ArraySource { array: [chart.color] }
             fillOpacity: 0.1
+
+            xRange {
+                automatic: false
+                from: 0
+                to: sensorMaxCount
+            }
 
             yRange {
                 automatic: false

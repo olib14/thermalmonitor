@@ -197,6 +197,7 @@ PlasmaExtras.Representation {
                 sensorUnit: unit
                 sensorValue: value
                 sensorHistory: history
+                sensorMaxCount: maxCount
                 sensorAvg: avg
                 sensorMin: min
                 sensorMax: max
