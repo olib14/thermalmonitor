@@ -35,7 +35,7 @@ Item {
             let sensorId = sourceModel.data(sourceModel.index(row, 0, parent), sensorRole);
 
             // Filter: remove non-sensors, only temperature and remove groups
-            return sensorId.length > 0 && display.includes("(°C)") && !display.includes("[");
+            return sensorId.length > 0 && display.includes("(°C)") && !display.includes("[Group]");
         }
 
         onRowCountChanged: model.update()
