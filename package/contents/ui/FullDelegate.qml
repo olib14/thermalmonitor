@@ -153,8 +153,12 @@ RowLayout {
 
             yRange {
                 automatic: false
-                from: chartAutomaticScale && sensorGlobalMin != undefined ? toNearest(sensorGlobalMin - 15, 20) : chartFromY
-                to: chartAutomaticScale && sensorGlobalMax != undefined ? toNearest(sensorGlobalMax + 15, 20) : chartToY
+                from: chartAutomaticScale && sensorGlobalMin != undefined && sensorGlobalMax != undefined
+                       ? toNearest(sensorGlobalMin - 15, 20)
+                       : chartFromY
+                to: chartAutomaticScale && sensorGlobalMin != undefined && sensorGlobalMax != undefined
+                       ? toNearest(sensorGlobalMax + 15, 20)
+                       : chartToY
             }
 
             function toNearest(value: int, increment: int) : int {
@@ -171,7 +175,7 @@ RowLayout {
                 major.count: {
                     let range = chart.yRange.to - chart.yRange.from;
                     let testValues = [1, 5, 10, 20, 25, 50, 100];
-                    let counts = []
+                    let counts = [];
 
                     for (let i = 0; i < testValues.length; ++i) {
                         if (range % testValues[i] === 0) {
