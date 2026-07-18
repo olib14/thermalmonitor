@@ -5,7 +5,7 @@ const Units = {
 }
 
 function convertUnit(value, from, to) {
-    if (value == undefined || value == NaN) {
+    if (!Number.isFinite(value)) {
         return undefined;
     }
 
@@ -79,7 +79,7 @@ function unitString(unit, includeSpace = true) {
 }
 
 function formatTemperature(value, unit, showUnit = true) {
-    if (value === undefined) {
+    if (!Number.isFinite(value)) {
         return "—";
     }
 

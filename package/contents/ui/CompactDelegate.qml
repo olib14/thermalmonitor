@@ -92,7 +92,7 @@ ColumnLayout {
     }
 
     function temperatureColor() : color {
-        if (enableDangerColor && sensorValue !== undefined) {
+        if (enableDangerColor && Number.isFinite(sensorValue)) {
             let temperature = Formatter.roundedTemperature(sensorValue);
 
             if (temperature >= meltdownThreshold) {
