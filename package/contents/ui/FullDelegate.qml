@@ -108,7 +108,7 @@ RowLayout {
                     return font;
                 }
 
-                text: Formatter.formatTemperature(ChartsControls.AxisLabels.label, sensorUnit, showUnit)
+                text: Formatter.formatTemperature(Number(ChartsControls.AxisLabels.label), sensorUnit, showUnit);
                 color: Kirigami.Theme.disabledTextColor
             }
 
